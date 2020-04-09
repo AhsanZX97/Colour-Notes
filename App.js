@@ -2,19 +2,33 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Platform, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { HomeScreen } from './components/HomeScreen'
-import { NotesScreen } from './components/NotesScreen'
+import { HomeScreen } from './Screens/HomeScreen'
+import { NotesScreen } from './Screens/NotesScreen'
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
   constructor(props) {
-    super(props)
-  
+    super(props);
+
     this.state = {
-       
-    }
+      notes: []
+    };
+
+    this.createNote = this.createNote.bind(this);
+  }
+
+  createNote(title, note) {
+
+    let notes = {
+      title: title,
+      note: note
+    };
+    var arr = this.state.notes;
+    arr.push(this.state.notes);
+
+    this.setState({ notes: arr });
   }
 
   render() {
@@ -29,7 +43,11 @@ export default class App extends React.Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }} />
+          }} 
+          initialParams = {{
+            notes: this.state.notes
+          }}
+          />
           <Stack.Screen name="Notes" component={NotesScreen} options={{
             headerStyle: {
               backgroundColor: '#f4511e',
@@ -38,7 +56,10 @@ export default class App extends React.Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }} />
+          }} 
+          initialParams = {{
+            createNote: this.createNote
+          }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

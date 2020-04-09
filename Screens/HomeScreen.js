@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 
-export const HomeScreen = ({ navigation }) => {
+export const HomeScreen = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Add a new note</Text>
+            <Text>Add a note</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.addButton}>
                 <Text style={styles.addButtonText}>+</Text>
             </TouchableOpacity>
