@@ -2,22 +2,61 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Notes from '../Components/Notes'
 
-export const HomeScreen = ({ route, navigation }) => {
+export default class HomeScreen extends React.Component {
 
-    const { params } = route
-    const front = params.notes.length == 0 ? <Text>Add notes to see them displayed</Text> :
-        params.notes.map((val, key) => {
-            return <Notes key={key} keyval={key} val={val} deleteMethod={() => params.deleteNote(key)} />;
-        });
+    constructor(navigation) {
+        super(navigation)
 
-    return (
-        <View style={{ flex: 1}}>
-            {front}
-            <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.addButton}>
-                <Text style={styles.addButtonText}>+</Text>
-            </TouchableOpacity>
-        </View>
-    );
+        this.state = {
+            notes: [{
+                title: "test",
+                note: "noteTest"
+            }, {
+                title: "test",
+                note: "noteTest"
+            },]
+        }
+
+        this.createNote = this.createNote.bind(this);
+        this.deleteNote = this.deleteNote.bind(this);
+    }
+
+
+    createNote(title, note) {
+
+        let notes = {
+            title: title,
+            note: note
+        };
+        this.state.notes.push(this.state.notes);
+
+        this.setState({ notes: this.state.notes });
+
+        alert(title);
+    }
+
+    deleteNote(key) {
+        this.state.notes.splice(key, 1);
+        this.setState({
+            notes: this.state.notes
+        })
+        alert(key)
+    }
+
+    render() {
+        const front = this.state.notes.length == 0 ? <Text>Add notes to see them displayed</Text> :
+            this.state.notes.map((val, key) => {
+                return <Notes key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />;
+            });
+        return (
+            <View style={{ flex: 1 }}>
+                {front}
+                <TouchableOpacity style={styles.addButton}>
+                    <Text style={styles.addButtonText}>+</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
