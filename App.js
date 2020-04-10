@@ -39,10 +39,7 @@ export default class App extends React.Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }}
-            initialParams={{
-              createNote: this.createNote
-            }} />
+          }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

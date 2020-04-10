@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Notes from '../Components/Notes'
 
+
 export default class HomeScreen extends React.Component {
 
-    constructor(navigation) {
-        super(navigation)
+    constructor(props) {
+        super(props)
 
         this.state = {
             notes: [{
@@ -19,6 +20,7 @@ export default class HomeScreen extends React.Component {
 
         this.createNote = this.createNote.bind(this);
         this.deleteNote = this.deleteNote.bind(this);
+        console.log(this.props)
     }
 
 
@@ -40,7 +42,6 @@ export default class HomeScreen extends React.Component {
         this.setState({
             notes: this.state.notes
         })
-        alert(key)
     }
 
     render() {
@@ -48,10 +49,15 @@ export default class HomeScreen extends React.Component {
             this.state.notes.map((val, key) => {
                 return <Notes key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />;
             });
+        
+        const { navigation } = this.props;
+
         return (
             <View style={{ flex: 1 }}>
                 {front}
-                <TouchableOpacity style={styles.addButton}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notes',{
+                    createNote: this.createNote
+                })} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </View>

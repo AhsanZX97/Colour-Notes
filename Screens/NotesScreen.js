@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 
-export const NotesScreen = ({ route, navigation }) => {
+export const NotesScreen = ({route}) => {
     const [titleVal, settitleVal, note, setnote] = React.useState('');
 
     return (
