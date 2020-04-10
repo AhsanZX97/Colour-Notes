@@ -13,10 +13,17 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      notes: []
+      notes: [{
+        title: "test",
+        note: "noteTest"
+      },{
+        title: "test",
+        note: "noteTest"
+      },]
     };
 
     this.createNote = this.createNote.bind(this);
+    this.deleteNote = this.deleteNote.bind(this);
   }
 
   createNote(title, note) {
@@ -25,10 +32,18 @@ export default class App extends React.Component {
       title: title,
       note: note
     };
-    var arr = this.state.notes;
-    arr.push(this.state.notes);
+    this.state.notes.push(this.state.notes);
 
-    this.setState({ notes: arr });
+    this.setState({ notes: this.state.notes });
+
+    alert(title);
+  }
+
+  deleteNote(key) {
+    this.state.notes.splice(key, 1);
+    this.setState({
+      notes: this.state.notes
+    })
   }
 
   render() {
@@ -43,10 +58,11 @@ export default class App extends React.Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }} 
-          initialParams = {{
-            notes: this.state.notes
           }}
+            initialParams={{
+              notes: this.state.notes,
+              deleteNote: this.deleteNote
+            }}
           />
           <Stack.Screen name="Notes" component={NotesScreen} options={{
             headerStyle: {
@@ -56,10 +72,10 @@ export default class App extends React.Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }} 
-          initialParams = {{
-            createNote: this.createNote
-          }}/>
+          }}
+            initialParams={{
+              createNote: this.createNote
+            }} />
         </Stack.Navigator>
       </NavigationContainer>
     );
