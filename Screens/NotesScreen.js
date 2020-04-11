@@ -10,29 +10,31 @@ export default class NotesScreen extends React.Component {
             titleVal: "",
             note: ""
         }
-
-        if (this.props.route.params.note) {
-            console.log("exist");
-        }
-        else {
-            console.log("nvm");
-        }
     }
 
+    componentWillMount() {
+        if (this.props.route.params.note) {
+            this.setState({
+                titleVal: this.props.route.params.note.title,
+                note: this.props.route.params.note.note
+            })
+        }
+    }
+    
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <TextInput
                     style={{ height: 60 }}
                     placeholder="ADD TITLE..."
-                    ref= {(el) => { this.titleVal = el; }}
-                    onChangeText={(titleVal) => this.setState({titleVal})}
+                    ref={(el) => { this.titleVal = el; }}
+                    onChangeText={(titleVal) => this.setState({ titleVal })}
                     value={this.state.titleVal}
                 />
                 <TextInput underlineColorAndroid="transparent"
                     placeholder="Add Description..."
-                    ref= {(el) => { this.note = el; }}
-                    onChangeText={(note) => this.setState({note})}
+                    ref={(el) => { this.note = el; }}
+                    onChangeText={(note) => this.setState({ note })}
                     value={this.state.note}
                     multiline={true} />
 
