@@ -11,14 +11,12 @@ export default class NotesScreen extends React.Component {
             note: ""
         }
 
-        console.log(this.props)
-
-        this.handleInputChange = this.handleInputChange.bind(this)
-    }
-
-    handleInputChange(event) {
-        console.log(event.target)
-        this.setState({ titleVal: event.target.value });
+        if (this.props.route.params.note) {
+            console.log("exist");
+        }
+        else {
+            console.log("nvm");
+        }
     }
 
     render() {
@@ -27,11 +25,14 @@ export default class NotesScreen extends React.Component {
                 <TextInput
                     style={{ height: 60 }}
                     placeholder="ADD TITLE..."
-                    onChangeText={this.handleInputChange}
+                    ref= {(el) => { this.titleVal = el; }}
+                    onChangeText={(titleVal) => this.setState({titleVal})}
                     value={this.state.titleVal}
                 />
                 <TextInput underlineColorAndroid="transparent"
                     placeholder="Add Description..."
+                    ref= {(el) => { this.note = el; }}
+                    onChangeText={(note) => this.setState({note})}
                     value={this.state.note}
                     multiline={true} />
 
