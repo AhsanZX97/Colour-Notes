@@ -20,7 +20,6 @@ export default class HomeScreen extends React.Component {
 
         this.createNote = this.createNote.bind(this);
         this.deleteNote = this.deleteNote.bind(this);
-        console.log(this.props)
     }
 
 
@@ -33,8 +32,18 @@ export default class HomeScreen extends React.Component {
         this.state.notes.push(this.state.notes);
 
         this.setState({ notes: this.state.notes });
+    }
 
-        alert(title);
+    saveNote(title, note) {
+
+        let notes = {
+            title: title,
+            note: note
+        };
+        this.state.notes.push(this.state.notes);
+
+        this.setState({ notes: this.state.notes });
+
     }
 
     deleteNote(key) {
@@ -47,7 +56,14 @@ export default class HomeScreen extends React.Component {
     render() {
         const front = this.state.notes.length == 0 ? <Text>Add notes to see them displayed</Text> :
             this.state.notes.map((val, key) => {
-                return <Notes key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />;
+                return (
+                    <TouchableOpacity onPress={() => navigation.navigate('Notes',{
+                        saveNote: this.saveNote,
+                        note: val
+                    })}>
+                        <Notes key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />
+                    </TouchableOpacity>
+                );
             });
         
         const { navigation } = this.props;

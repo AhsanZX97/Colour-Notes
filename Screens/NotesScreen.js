@@ -1,8 +1,68 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 
-export const NotesScreen = ({route}) => {
+export default class NotesScreen extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            titleVal: "",
+            note: ""
+        }
+
+        console.log(this.props)
+
+        this.handleInputChange = this.handleInputChange.bind(this)
+    }
+
+    handleInputChange(event) {
+        console.log(event.target)
+        this.setState({ titleVal: event.target.value });
+    }
+
+    render() {
+        return (
+            <View style={{ flex: 1 }}>
+                <TextInput
+                    style={{ height: 60 }}
+                    placeholder="ADD TITLE..."
+                    onChangeText={this.handleInputChange}
+                    value={this.state.titleVal}
+                />
+                <TextInput underlineColorAndroid="transparent"
+                    placeholder="Add Description..."
+                    value={this.state.note}
+                    multiline={true} />
+
+            </View>
+        )
+    }
+}
+
+
+
+/*export const NotesScreen = ({ route }) => {
     const [titleVal, settitleVal, note, setnote] = React.useState('');
+    var button;
+
+    if (route.params.note) {
+        const { note } = route.params;
+        titleVal = note.title;
+        note = note.note;
+        button = (
+            <TouchableOpacity onPress={route.params.saveNote} style={styles.createButton}>
+                <Text style={styles.createButtonText}>Save</Text>
+            </TouchableOpacity>
+        )
+    }
+    else {
+        button = (
+            <TouchableOpacity onPress={route.params.createNote} style={styles.createButton}>
+                <Text style={styles.createButtonText}>Create</Text>
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -16,12 +76,10 @@ export const NotesScreen = ({route}) => {
                 placeholder="Add Description..."
                 value={note}
                 multiline={true} />
-            <TouchableOpacity onPress = {route.params.createNote} style={styles.createButton}>
-                <Text style={styles.createButtonText}>Create</Text>
-            </TouchableOpacity>
+            {button}
         </View>
     );
-}
+}*/
 
 const styles = StyleSheet.create({
     createButton: {
