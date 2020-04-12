@@ -10,10 +10,10 @@ export default class HomeScreen extends React.Component {
 
         this.state = {
             notes: [{
-                title: "test",
+                title: "test1",
                 note: "noteTest"
             }, {
-                title: "test",
+                title: "test2",
                 note: "noteTest"
             },]
         }
@@ -34,16 +34,22 @@ export default class HomeScreen extends React.Component {
         this.setState({ notes: this.state.notes });
     }
 
-    saveNote(title, note) {
+    saveNote(note) {
 
-        let noteObj = {
-            title: title,
-            note: note
-        };
-        this.state.notes.push(noteObj);
+        console.log("outside for loops")
+        var notes = this.state.notes;
+        for (var i = 0; i < notes.length; i++) {
+            if (notes[i].title == note.title.props.value) {
+                let noteObj = {
+                    title: note.title.props.value,
+                    note: note.noteText.props.value
+                };
+                notes[i] = noteObj;
 
-        this.setState({ notes: this.state.notes });
-
+                this.setState({ notes: notes })
+                console.log(note.noteText.props.value)
+            }
+        }
     }
 
     deleteNote(key) {
@@ -53,25 +59,40 @@ export default class HomeScreen extends React.Component {
         })
     }
 
+    componentWillReceiveProps() {
+        try {
+            if (this.props) {
+                var ops = this.props.route.params.operation;
+                if (ops == 'save') {
+                    var note = this.props.route.params.note
+                    this.saveNote(this.props.route.params.note)
+                }
+            }
+        } catch (error) {
+            console.log("Error")
+        }
+
+    }
+
     render() {
+
+        const { navigation } = this.props;
+
         const front = this.state.notes.length == 0 ? <Text>Add notes to see them displayed</Text> :
             this.state.notes.map((val, key) => {
                 return (
-                    <TouchableOpacity onPress={() => navigation.navigate('Notes',{
-                        saveNote: this.saveNote,
+                    <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                         note: val
                     })}>
                         <Notes key={key} keyval={key} val={val} deleteMethod={() => this.deleteNote(key)} />
                     </TouchableOpacity>
                 );
             });
-        
-        const { navigation } = this.props;
 
         return (
             <View style={{ flex: 1 }}>
                 {front}
-                <TouchableOpacity onPress={() => navigation.navigate('Notes',{
+                <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                     createNote: this.createNote
                 })} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>

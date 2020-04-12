@@ -8,13 +8,10 @@ export default class NotesScreen extends React.Component {
 
         this.state = {
             titleVal: "",
-            note: "",
-            button: (
-                <TouchableOpacity onPress={this.props.route.params.createNote} style={styles.createButton}>
-                    <Text style={styles.createButtonText}>Create</Text>
-                </TouchableOpacity>
-            )
+            note: ""
         }
+
+        const { navigation } = this.props;
     }
 
     componentWillMount() {
@@ -22,16 +19,38 @@ export default class NotesScreen extends React.Component {
             this.setState({
                 titleVal: this.props.route.params.note.title,
                 note: this.props.route.params.note.note,
-                button: (
-                    <TouchableOpacity onPress={this.props.route.params.saveNote} style={styles.createButton}>
-                        <Text style={styles.createButtonText}>Save</Text>
-                    </TouchableOpacity>
-                )
             })
         }
     }
 
+
+
     render() {
+
+        const { navigation } = this.props;
+        var button;
+
+        if (this.props.route.params.note) {
+            button = (
+                <TouchableOpacity onPress={() => navigation.navigate('StickyBlicky Notes', {
+                    operation: 'save',
+                    note: {
+                        title: this.titleVal,
+                        noteText: this.note
+                    }
+                })} style={styles.createButton}>
+                    <Text style={styles.createButtonText}>Save</Text>
+                </TouchableOpacity>
+            )
+        }
+        else {
+            button = (
+                <TouchableOpacity onPress={this.props.route.params.createNote} style={styles.createButton}>
+                    <Text style={styles.createButtonText}>Create</Text>
+                </TouchableOpacity>
+            )
+        }
+
         return (
             <View style={{ flex: 1 }}>
                 <TextInput
@@ -47,7 +66,7 @@ export default class NotesScreen extends React.Component {
                     onChangeText={(note) => this.setState({ note })}
                     value={this.state.note}
                     multiline={true} />
-                {this.state.button}
+                {button}
             </View>
         )
     }
