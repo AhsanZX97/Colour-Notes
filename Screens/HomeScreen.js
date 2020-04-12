@@ -25,22 +25,22 @@ export default class HomeScreen extends React.Component {
 
     createNote(title, note) {
 
-        let note = {
+        let noteObj = {
             title: title,
             note: note
         };
-        this.state.notes.push(note);
+        this.state.notes.push(noteObj);
 
         this.setState({ notes: this.state.notes });
     }
 
     saveNote(title, note) {
 
-        let note = {
+        let noteObj = {
             title: title,
             note: note
         };
-        this.state.notes.push(this.state.notes);
+        this.state.notes.push(noteObj);
 
         this.setState({ notes: this.state.notes });
 

@@ -8,7 +8,12 @@ export default class NotesScreen extends React.Component {
 
         this.state = {
             titleVal: "",
-            note: ""
+            note: "",
+            button: (
+                <TouchableOpacity onPress={this.props.route.params.createNote} style={styles.createButton}>
+                    <Text style={styles.createButtonText}>Create</Text>
+                </TouchableOpacity>
+            )
         }
     }
 
@@ -16,11 +21,16 @@ export default class NotesScreen extends React.Component {
         if (this.props.route.params.note) {
             this.setState({
                 titleVal: this.props.route.params.note.title,
-                note: this.props.route.params.note.note
+                note: this.props.route.params.note.note,
+                button: (
+                    <TouchableOpacity onPress={this.props.route.params.saveNote} style={styles.createButton}>
+                        <Text style={styles.createButtonText}>Save</Text>
+                    </TouchableOpacity>
+                )
             })
         }
     }
-    
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -37,7 +47,7 @@ export default class NotesScreen extends React.Component {
                     onChangeText={(note) => this.setState({ note })}
                     value={this.state.note}
                     multiline={true} />
-
+                {this.state.button}
             </View>
         )
     }
