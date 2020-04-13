@@ -8,7 +8,7 @@ namespace Api.Models
     public class Note
     {
         public int id { get; set; }
-        public int title { get; set; }
-        public int notes { get; set; }
+        public string title { get; set; }
+        public string notes { get; set; }
     }
 }
