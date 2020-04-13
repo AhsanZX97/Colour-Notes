@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Notes from '../Components/Notes'
 
-
 export default class HomeScreen extends React.Component {
 
     constructor(props) {
@@ -20,6 +19,7 @@ export default class HomeScreen extends React.Component {
 
         this.createNote = this.createNote.bind(this);
         this.deleteNote = this.deleteNote.bind(this);
+
     }
 
 
@@ -59,7 +59,7 @@ export default class HomeScreen extends React.Component {
         })
     }
 
-    componentWillReceiveProps() {
+    /*componentWillReceiveProps() {
         try {
             if (this.props) {
                 var ops = this.props.route.params.operation;
@@ -72,6 +72,14 @@ export default class HomeScreen extends React.Component {
             console.log("Error")
         }
 
+    }*/
+
+    componentDidMount() {
+        fetch('https://localhost:3001/api/notes', {
+            // mode: 'no-cors',
+            method: 'GET'
+        }).then((response) => console.log("works"))
+            .catch((error) => console.log(error));
     }
 
     render() {

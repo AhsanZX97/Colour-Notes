@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './Screens/HomeScreen'
 import NotesScreen from './Screens/NotesScreen'
-
+// https://localhost:44376/api/notes
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
