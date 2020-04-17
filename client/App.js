@@ -4,45 +4,49 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './Screens/HomeScreen'
 import NotesScreen from './Screens/NotesScreen'
-// https://localhost:44376/api/notes
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
+import Reducers from './Reducers'
+
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-
-    };
-  }
-
   render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="StickyBlicky Notes" component={HomeScreen} options={{
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-          />
-          <Stack.Screen name="Notes" component={NotesScreen} options={{
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}/>
-        </Stack.Navigator>
 
-      </NavigationContainer>
+    state = createStore(Reducers, {}, applyMiddleware(ReduxThunk));
+
+    return (
+      <Provider store={state}>
+
+        <NavigationContainer>
+
+          <Stack.Navigator>
+            <Stack.Screen name="StickyBlicky Notes" component={HomeScreen} options={{
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+            />
+            <Stack.Screen name="Notes" component={NotesScreen} options={{
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }} />
+          </Stack.Navigator>
+
+        </NavigationContainer>
+
+      </Provider>
     );
   }
 }
