@@ -1,10 +1,9 @@
 export default function (state = {}, action) {
     switch (action.type) {
         case "NOTES_FETCH":
-
             return {
                 ...state,
-                blogsList: action.payload
+                notesList: action.payload
             }
 
         default:
