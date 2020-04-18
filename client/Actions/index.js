@@ -24,7 +24,9 @@ export function getNotes() {
 }
 
 export function postNote(title, noteText) {
+    console.log(title + " " + noteText);
     return (dispatch) => {
+        
         firebase.database().ref('/notes').push({ title, noteText })
     }
 }

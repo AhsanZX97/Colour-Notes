@@ -14,12 +14,10 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        console.log(this.props.listOfNotes);
         const { navigation } = this.props;
 
         const front = this.props.listOfNotes == 0 ? <Text>Add notes to see them displayed</Text> :
             this.props.listOfNotes.map((val, key) => {
-                console.log(val)
                 return (
                     <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                         note: val
