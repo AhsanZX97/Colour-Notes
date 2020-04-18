@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { deleteNote } from '../Actions'
+import { connect } from 'react-redux';
 
-export default class Notes extends Component {
+
+class Notes extends Component {
     render() {
         return (
             <View key={this.props.keyval} style={styles.note}>
                 <Text style={styles.noteText}>{this.props.val.title}</Text>
                 <Text style={styles.noteText}>{this.props.val.note}</Text>
-                <TouchableOpacity onPress={this.props.deleteMethod} style={styles.noteDelete}>
+                <TouchableOpacity onPress={deleteNote(this.props.keyval)} style={styles.noteDelete}>
                     <Text style={styles.noteDeleteText}>Delete</Text>
                 </TouchableOpacity>
             </View>
@@ -42,3 +45,5 @@ const styles = StyleSheet.create({
         color: "white",
     }
 });
+
+export default connect(null, { deleteNote })(Notes);

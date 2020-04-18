@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Notes from '../Components/Notes'
-import { getNotes, deleteNote } from '../Actions';
+import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 
@@ -19,11 +19,12 @@ class HomeScreen extends React.Component {
 
         const front = this.props.listOfNotes == 0 ? <Text>Add notes to see them displayed</Text> :
             this.props.listOfNotes.map((val, key) => {
+                console.log(val)
                 return (
                     <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                         note: val
                     })}>
-                        <Notes key={key} keyval={key} val={val} />
+                        <Notes key={key} keyval={val.key} val={val} />
                     </TouchableOpacity>
                 );
             });
@@ -73,4 +74,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { getNotes , deleteNote })(HomeScreen);
+export default connect(mapStateToProps, { getNotes })(HomeScreen);
