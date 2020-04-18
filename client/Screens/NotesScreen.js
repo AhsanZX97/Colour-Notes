@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
-import { postNote } from '../Actions';
+import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 
 class NotesScreen extends React.Component {
 
     state = {
         titleVal: "",
-        note: ""
+        note: "",
+        key: undefined
     }
 
     createNote = () => {
-        this.props.postNote(this.state.titleVal,this.state.note);
+        this.props.postNote(this.state.titleVal, this.state.note);
         this.setState({
             titleVal: "",
             note: ""
@@ -19,7 +20,40 @@ class NotesScreen extends React.Component {
         this.props.navigation.navigate('StickyBlicky Notes');
     }
 
+    editNote = () => {
+        this.props.editNote(this.state.titleVal, this.state.note, this.state.key);
+        this.setState({
+            titleVal: "",
+            note: "",
+            key: undefined
+        })
+        this.props.navigation.navigate('StickyBlicky Notes');
+    }
+
+    componentWillMount() {
+        if (this.props.route.params != undefined) {
+            var note = this.props.route.params.note;
+            this.setState({
+                titleVal: note.title,
+                note: note.noteText,
+                key: note.key
+            })
+        }
+    }
+
     render() {
+
+        var button;
+        if (this.state.key != undefined) {
+            button = (<TouchableOpacity onPress={this.editNote} style={styles.createButton}>
+                <Text style={styles.createButtonText}>Save</Text>
+            </TouchableOpacity>)
+        }
+        else {
+            button = (<TouchableOpacity onPress={this.createNote} style={styles.createButton}>
+                <Text style={styles.createButtonText}>Create</Text>
+            </TouchableOpacity>)
+        }
 
         return (
             <View style={{ flex: 1 }}>
@@ -36,9 +70,7 @@ class NotesScreen extends React.Component {
                     onChangeText={(note) => this.setState({ note })}
                     value={this.state.note}
                     multiline={true} />
-                <TouchableOpacity onPress={this.createNote} style={styles.createButton}>
-                    <Text style={styles.createButtonText}>Create</Text>
-                </TouchableOpacity>
+                {button}
             </View>
         )
     }
@@ -64,4 +96,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect(null, { postNote })(NotesScreen);
+export default connect(null, { postNote, editNote })(NotesScreen);
