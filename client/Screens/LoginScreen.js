@@ -1,15 +1,34 @@
 import React from 'react';
-import {Dimensions} from 'react-native'
+import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar } from 'react-native';
+import firebase from '../db'
 
 class LoginScreen extends React.Component {
 
     state = {
-        loggedIn: null
+        email: '',
+        password: '',
+        error: ''
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.props.navigation.navigate('StickyBlicky Notes');
+            } else {
+                console.log("Not logged in")
+            }
+        })
     }
 
     onBottomPress = () => {
-
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(this.onLoginSuccess)
+            .catch(err => {
+                this.setState({
+                    error: err.message
+                })
+            })
     }
 
     render() {
@@ -47,6 +66,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+
     input: {
         backgroundColor: '#ffe97d',
         width: screenWidth - 40,
@@ -56,6 +76,29 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 20,
         color: '#000000',
+    },
+
+    buttonContainer: {
+        backgroundColor: '#3B3B98',
+        padding: 15,
+        borderRadius: 20,
+        width: screenWidth - 40,
+        height: 60,
+        marginTop: 20,
+    },
+
+    buttonText: {
+        textAlign: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+
+    errorText: {
+        fontSize: 15,
+        color: 'red',
+        alignSelf: 'center',
+        marginTop: 15
     },
 });
 

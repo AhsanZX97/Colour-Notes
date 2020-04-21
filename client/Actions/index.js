@@ -1,6 +1,5 @@
 import firebase from '../db'
 
-
 export function getNotes() {
     return (dispatch) => {
 
