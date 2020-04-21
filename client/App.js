@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import Reducers from './Reducers'
+import LoginScreen from './Screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,9 @@ export default class App extends React.Component {
         <NavigationContainer>
 
           <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} options={{
+              headerShown: false
+            }} />
             <Stack.Screen name="StickyBlicky Notes" component={HomeScreen} options={{
               headerStyle: {
                 backgroundColor: '#f4511e',
