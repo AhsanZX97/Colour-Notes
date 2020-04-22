@@ -8,7 +8,8 @@ class LoginScreen extends React.Component {
     state = {
         email: '',
         password: '',
-        error: ''
+        error: '',
+        loading: "",
     }
 
     componentDidMount() {
