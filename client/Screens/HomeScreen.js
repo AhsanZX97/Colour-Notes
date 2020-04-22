@@ -4,13 +4,17 @@ import Notes from '../Components/Notes'
 import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
 import _ from 'lodash'
-
-
+import firebase from '../db'
 
 class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.props.getNotes();
+    }
+
+    logOut = () => {
+        firebase.auth().signOut();
+        this.props.navigation.navigate('Login');
     }
 
     render() {
@@ -32,6 +36,9 @@ class HomeScreen extends React.Component {
                 {front}
                 <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.logOut} style={styles.signOut}>
+                    <Text style={styles.signOutText}>sign out</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -55,6 +62,23 @@ const styles = StyleSheet.create({
     addButtonText: {
         color: '#fff',
         fontSize: 24,
+    },
+    signOut: {
+        position: 'absolute',
+        zIndex: 11,
+        right: 90,
+        bottom: 20,
+        backgroundColor: '#f4511e',
+        width: 70,
+        height: 40,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 8,
+    },
+    signOutText: {
+        color: '#fff',
+        fontSize: 14,
     },
 })
 
