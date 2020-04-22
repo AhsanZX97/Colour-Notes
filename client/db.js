@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import api from './variables'
 
 var firebaseConfig = {
-    apiKey: api,
+    apiKey: "AIzaSyCZ1-RADuaZC96PFBEe0EUkAanYc9tHZDY",
     authDomain: "stickyblickynotes.firebaseapp.com",
     databaseURL: "https://stickyblickynotes.firebaseio.com",
     projectId: "stickyblickynotes",

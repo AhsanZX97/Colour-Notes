@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions } from 'react-native'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import firebase from '../db'
 
 class LoginScreen extends React.Component {
@@ -9,7 +9,7 @@ class LoginScreen extends React.Component {
         email: '',
         password: '',
         error: '',
-        loading: "",
+        loading: false
     }
 
     componentDidMount() {
@@ -17,19 +17,37 @@ class LoginScreen extends React.Component {
             if (user) {
                 this.props.navigation.navigate('StickyBlicky Notes');
             } else {
-                console.log("Not logged in")
+                console.log("not logged in")
             }
         })
     }
 
     onBottomPress = () => {
+        this.setState({
+            loading: true
+        })
+
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(this.onLoginSuccess)
             .catch(err => {
                 this.setState({
-                    error: err.message
+                    error: err.message,
+                    loading: false
                 })
             })
+    }
+
+    renderButton = () => {
+        switch (this.state.loading) {
+            case true:
+                return (<ActivityIndicator size="large" />)
+            default:
+                return (
+                    <TouchableOpacity style={styles.buttonContainer} onPress={this.onBottomPress}>
+                        <Text style={styles.buttonText}>Login</Text>
+                    </TouchableOpacity>
+                )
+        }
     }
 
     render() {
@@ -44,10 +62,8 @@ class LoginScreen extends React.Component {
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })} />
 
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.onBottomPress}>
-                    <Text style={styles.buttonText}>Login</Text>
+                {this.renderButton()}
 
-                </TouchableOpacity>
                 <Text style={styles.errorText}>
                     {this.state.error}
                 </Text>
