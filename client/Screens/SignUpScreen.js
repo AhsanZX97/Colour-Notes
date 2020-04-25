@@ -24,7 +24,42 @@ class SignUpScreen extends React.Component {
 
     onButtonPress = () => {
         this.setState({
-            loading: true
+            loading: true,
+            email: this.state.email.trim(),
+            password: this.state.password.trim(),
+            confirmPassword: this.state.confirmPassword.trim()
+        })
+
+        if (this.state.password != this.state.confirmPassword) {
+            this.setState({
+                loading: false,
+                error: 'Passwords do not match'
+            })
+        }
+        else {
+            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+                .then(success => {
+                    this.setState({
+                        email: '',
+                        password: '',
+                        confirmPassword: '',
+                        error: '',
+                        loading: false
+                    })
+                })
+                .catch(err => {
+                    this.setState({
+                        error: err.message,
+                        loading: false
+                    })
+                })
+        }
+
+    }
+
+    changeHandle = (name,value) => {
+        this.setState({
+            [name]: value.replace(/\s/g, '')
         })
     }
 
@@ -47,17 +82,17 @@ class SignUpScreen extends React.Component {
             <View style={styles.container}>
                 <TextInput placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.setState({ email })} />
+                    onChangeText={email => this.changeHandle("email",email)} />
 
                 <TextInput placeholder="password" style={styles.input}
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })} />
+                    onChangeText={password => this.changeHandle("password",password)} />
 
                 <TextInput placeholder="confirm password" style={styles.input}
                     value={this.state.confirmPassword}
                     secureTextEntry={true}
-                    onChangeText={confirmPassword => this.setState({ confirmPassword })} />
+                    onChangeText={confirmPassword => this.changeHandle("confirmPassword",confirmPassword)} />
 
                 {this.renderButton()}
 
