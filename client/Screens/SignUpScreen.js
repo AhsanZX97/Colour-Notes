@@ -25,9 +25,7 @@ class SignUpScreen extends React.Component {
     onButtonPress = () => {
         this.setState({
             loading: true,
-            email: this.state.email.trim(),
-            password: this.state.password.trim(),
-            confirmPassword: this.state.confirmPassword.trim()
+            email: this.state.email.toLowerCase()
         })
 
         if (this.state.password != this.state.confirmPassword) {

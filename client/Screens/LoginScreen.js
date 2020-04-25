@@ -24,7 +24,8 @@ class LoginScreen extends React.Component {
 
     onButtonPress = () => {
         this.setState({
-            loading: true
+            loading: true,
+            email: this.state.email.toLowerCase()
         })
 
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -57,18 +58,24 @@ class LoginScreen extends React.Component {
         }
     }
 
+    changeHandle = (name,value) => {
+        this.setState({
+            [name]: value.replace(/\s/g, '')
+        })
+    }
+
     render() {
 
         return (
             <View style={styles.container}>
                 <TextInput placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.setState({ email })} />
+                    onChangeText={email => this.changeHandle( "email", email )} />
 
                 <TextInput placeholder="password" style={styles.input}
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })} />
+                    onChangeText={password => this.changeHandle("password", password )} />
 
                 {this.renderButton()}
 
