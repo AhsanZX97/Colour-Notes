@@ -3,11 +3,11 @@ import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import firebase from '../db'
 
-class LoginScreen extends React.Component {
-
+class SignUpScreen extends React.Component {
     state = {
         email: '',
         password: '',
+        confirmPassword: '',
         error: '',
         loading: false
     }
@@ -26,22 +26,6 @@ class LoginScreen extends React.Component {
         this.setState({
             loading: true
         })
-
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(success => {
-                this.setState({
-                    email: '',
-                    password: '',
-                    error: '',
-                    loading: false
-                })
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.message,
-                    loading: false
-                })
-            })
     }
 
     renderButton = () => {
@@ -51,7 +35,7 @@ class LoginScreen extends React.Component {
             default:
                 return (
                     <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                        <Text style={styles.buttonText}>Login</Text>
+                        <Text style={styles.buttonText}>SignUp</Text>
                     </TouchableOpacity>
                 )
         }
@@ -70,20 +54,16 @@ class LoginScreen extends React.Component {
                     secureTextEntry={true}
                     onChangeText={password => this.setState({ password })} />
 
+                <TextInput placeholder="confirm password" style={styles.input}
+                    value={this.state.confirmPassword}
+                    secureTextEntry={true}
+                    onChangeText={confirmPassword => this.setState({ confirmPassword })} />
+
                 {this.renderButton()}
 
                 <Text style={styles.errorText}>
                     {this.state.error}
                 </Text>
-
-                <View style={styles.signUpSection}>
-                    <TouchableOpacity style={styles.signUpSection} onPress={() => this.props.navigation.navigate('Sign Up')}>
-                        <Text style={styles.signUpText}>Create Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.signUpSection} onPress={this.onButtonPress}>
-                        <Text style={styles.text}>Forget Password</Text>
-                    </TouchableOpacity>
-                </View>
 
             </View>
         )
@@ -93,23 +73,12 @@ class LoginScreen extends React.Component {
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-
-    signUpSection: {
-        width: screenWidth - 80,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-    },
-    text: {
-        color: 'black',
-        backgroundColor: 'transparent',
     },
 
     input: {
@@ -145,6 +114,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 15
     },
-});
+})
 
-export default LoginScreen;
+
+export default SignUpScreen

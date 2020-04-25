@@ -8,6 +8,8 @@ import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import Reducers from './Reducers'
 import LoginScreen from './Screens/LoginScreen';
+import SignUpScreen from './Screens/SignUpScreen';
+import ForgotScreen from './Screens/ForgotScreen'
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,12 @@ export default class App extends React.Component {
 
           <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} options={{
+              headerShown: false
+            }} />
+            <Stack.Screen name="Sign Up" component={SignUpScreen} options={{
+              headerShown: false
+            }} />
+            <Stack.Screen name="Forgot" component={ForgotScreen} options={{
               headerShown: false
             }} />
             <Stack.Screen name="StickyBlicky Notes" component={HomeScreen} options={{
