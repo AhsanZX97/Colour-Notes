@@ -42,6 +42,7 @@ export default class App extends React.Component {
               headerTitleStyle: {
                 fontWeight: 'bold',
               },
+              headerLeft: false,
             }}
             />
             <Stack.Screen name="Notes" component={NotesScreen} options={{

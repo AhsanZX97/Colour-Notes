@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions } from 'react-native'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator, BackHandler } from 'react-native';
 import firebase from '../db'
 
 class LoginScreen extends React.Component {
@@ -13,11 +13,19 @@ class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            loading: true
+        })
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.props.navigation.navigate('StickyBlicky Notes');
+                this.setState({
+                    loading: false
+                })
+                this.props.navigation.replace('StickyBlicky Notes');
             } else {
-                console.log("not logged in")
+                this.setState({
+                    loading: false
+                })
             }
         })
     }
@@ -58,7 +66,7 @@ class LoginScreen extends React.Component {
         }
     }
 
-    changeHandle = (name,value) => {
+    changeHandle = (name, value) => {
         this.setState({
             [name]: value.replace(/\s/g, '')
         })
@@ -70,12 +78,12 @@ class LoginScreen extends React.Component {
             <View style={styles.container}>
                 <TextInput placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.changeHandle( "email", email )} />
+                    onChangeText={email => this.changeHandle("email", email)} />
 
                 <TextInput placeholder="password" style={styles.input}
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={password => this.changeHandle("password", password )} />
+                    onChangeText={password => this.changeHandle("password", password)} />
 
                 {this.renderButton()}
 

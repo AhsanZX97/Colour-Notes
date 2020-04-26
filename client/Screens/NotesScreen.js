@@ -17,7 +17,7 @@ class NotesScreen extends React.Component {
             titleVal: "",
             note: ""
         })
-        this.props.navigation.navigate('StickyBlicky Notes');
+        this.props.navigation.replace('StickyBlicky Notes');
     }
 
     editNote = () => {
@@ -27,7 +27,7 @@ class NotesScreen extends React.Component {
             note: "",
             key: undefined
         })
-        this.props.navigation.navigate('StickyBlicky Notes');
+        this.props.navigation.replace('StickyBlicky Notes');
     }
 
     componentWillMount() {
