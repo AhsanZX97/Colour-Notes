@@ -1,6 +1,7 @@
 import firebase from '../db'
 
 export function getNotes() {
+
     return (dispatch) => {
 
         dispatch({
@@ -8,7 +9,9 @@ export function getNotes() {
             payload: true
         })
 
-        firebase.database().ref('/notes').on('value', snapshot => {
+        var uid = firebase.auth().currentUser.uid;
+
+        firebase.database().ref(`/${uid}/notes`).on('value', snapshot => {
             dispatch({
                 type: "NOTES_FETCH",
                 payload: snapshot.val()
@@ -23,21 +26,22 @@ export function getNotes() {
 }
 
 export function postNote(title, noteText) {
-    console.log(title + " " + noteText);
     return (dispatch) => {
-        
-        firebase.database().ref('/notes').push({ title, noteText })
+        var uid = firebase.auth().currentUser.uid;
+        firebase.database().ref(`/${uid}/notes`).push({ title, noteText })
     }
 }
 
 export function deleteNote(key) {
     return (dispatch) => {
-        firebase.database().ref(`/notes/${key}`).remove()
+        var uid = firebase.auth().currentUser.uid;
+        firebase.database().ref(`/${uid}/notes/${key}`).remove()
     }
 }
 
 export function editNote(title, noteText, key) {
     return (dispatch) => {
-        firebase.database().ref(`/notes`).child(key).update({ title, noteText })
+        var uid = firebase.auth().currentUser.uid;
+        firebase.database().ref(`/${uid}/notes`).child(key).update({ title, noteText })
     }
 }
