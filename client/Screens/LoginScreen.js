@@ -87,7 +87,7 @@ class LoginScreen extends React.Component {
                     <TouchableOpacity style={styles.signUpSection} onPress={() => this.props.navigation.navigate('Sign Up')}>
                         <Text style={styles.signUpText}>Create Account</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signUpSection} onPress={this.onButtonPress}>
+                    <TouchableOpacity style={styles.signUpSection} onPress={() => this.props.navigation.navigate('Forgot')}>
                         <Text style={styles.text}>Forget Password</Text>
                     </TouchableOpacity>
                 </View>
