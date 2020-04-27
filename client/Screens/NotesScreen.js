@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
+import ActionButton from 'react-native-action-button';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 
 class NotesScreen extends React.Component {
 
@@ -45,9 +48,14 @@ class NotesScreen extends React.Component {
 
         var button;
         if (this.state.key != undefined) {
-            button = (<TouchableOpacity onPress={this.editNote} style={styles.createButton}>
+            button = (/*<TouchableOpacity onPress={this.editNote} style={styles.createButton}>
                 <Text style={styles.createButtonText}>Save</Text>
-            </TouchableOpacity>)
+            </TouchableOpacity>*/
+
+                <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+                    <Text style={styles.createButtonText}>Save</Text>
+                </ActionButton.Item>
+            )
         }
         else {
             button = (<TouchableOpacity onPress={this.createNote} style={styles.createButton}>
@@ -60,13 +68,15 @@ class NotesScreen extends React.Component {
                 <TextInput
                     style={styles.title}
                     placeholder="ADD TITLE..."
+                    placeholderTextColor="#696969"
                     ref={(el) => { this.titleVal = el; }}
                     onChangeText={(titleVal) => this.setState({ titleVal })}
                     value={this.state.titleVal}
                 />
                 <TextInput underlineColorAndroid="transparent"
                     style={styles.note}
-                    placeholder="Add Description..."
+                    placeholder="Add Notes..."
+                    placeholderTextColor="#696969"
                     ref={(el) => { this.note = el; }}
                     onChangeText={(note) => this.setState({ note })}
                     value={this.state.note}
