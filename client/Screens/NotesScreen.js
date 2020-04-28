@@ -21,8 +21,41 @@ const colourScheme = [
         titleColor: "#e7cfff",
         borderColor: "#723226",
         noteColor: "#f2e6ff",
-        placeholderTextColor: "#696969"
-    }
+        placeholderTextColor: "#696969",
+        color:'black'
+    },
+    Red = {
+        name: "Red",
+        titleColor: "#FFCFCF",
+        borderColor: "#722626",
+        noteColor: "#FFE6E6",
+        placeholderTextColor: "#696969",
+        color:'black'
+    },
+    Blue = {
+        name: "Blue",
+        titleColor: "#CDE9FF",
+        borderColor: "#D2E0ED",
+        noteColor: "#E2F1FF",
+        placeholderTextColor: "#696969",
+        color:'black'
+    },
+    Green = {
+        name: "Green",
+        titleColor: "#CBF1C4",
+        borderColor: "#D4E7D0",
+        noteColor: "#E4F9E0",
+        placeholderTextColor: "#696969",
+        color:'black'
+    },
+    Black = {
+        name: "Black",
+        titleColor: "#494745",
+        borderColor: "#747474",
+        noteColor: "#696969",
+        placeholderTextColor: "#BFBFBF",
+        color:'white'
+    },
 ]
 
 class NotesScreen extends React.Component {
@@ -31,10 +64,12 @@ class NotesScreen extends React.Component {
         titleVal: "",
         note: "",
         key: undefined,
+        Color: "Purple",
         titleColor: "#e7cfff",
         borderColor: "#723226",
         noteColor: "#f2e6ff",
-        placeholderTextColor: "#696969"
+        placeholderTextColor: "#696969",
+        color:'black'
     }
 
     createNote = () => {
@@ -76,7 +111,18 @@ class NotesScreen extends React.Component {
     }
 
     selectColour = (colour) => {
-        alert(colour)
+        for (var i = 0; i < colourScheme.length; i++) {
+            if (colourScheme[i].name === colour) {
+                this.setState({
+                    Color: colourScheme[i].name,
+                    titleColor: colourScheme[i].titleColor,
+                    borderColor: colourScheme[i].borderColor,
+                    noteColor: colourScheme[i].noteColor,
+                    placeholderTextColor: colourScheme[i].placeholderTextColor,
+                    color: colourScheme[i].color
+                })
+            }
+        }
     }
 
     componentWillMount() {
@@ -117,9 +163,10 @@ class NotesScreen extends React.Component {
                             backgroundColor: this.state.titleColor,
                             borderBottomColor: this.state.borderColor,
                             borderBottomWidth: 1,
+                            color:this.state.color
                         }}
                         placeholder="ADD TITLE..."
-                        placeholderTextColor= {this.state.placeholderTextColor}
+                        placeholderTextColor={this.state.placeholderTextColor}
                         ref={(el) => { this.titleVal = el; }}
                         onChangeText={(titleVal) => this.setState({ titleVal })}
                         value={this.state.titleVal}
@@ -127,6 +174,7 @@ class NotesScreen extends React.Component {
                     <TextInput underlineColorAndroid="transparent"
                         style={{
                             backgroundColor: this.state.noteColor,
+                            color: this.state.color,
                             textAlignVertical: "top"
                         }}
                         placeholder="Add Notes..."
