@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'rea
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 class NotesScreen extends React.Component {
@@ -15,22 +15,41 @@ class NotesScreen extends React.Component {
     }
 
     createNote = () => {
-        this.props.postNote(this.state.titleVal, this.state.note);
+
         this.setState({
-            titleVal: "",
-            note: ""
+            titleVal: this.state.titleVal.trim()
         })
-        this.props.navigation.replace('StickyBlicky Notes');
+
+        if (this.state.titleVal === "") {
+            alert("Title cannot be empty")
+        }
+        else {
+            this.props.postNote(this.state.titleVal, this.state.note);
+            this.setState({
+                titleVal: "",
+                note: ""
+            })
+            this.props.navigation.replace('StickyBlicky Notes');
+        }
     }
 
     editNote = () => {
-        this.props.editNote(this.state.titleVal, this.state.note, this.state.key);
         this.setState({
-            titleVal: "",
-            note: "",
-            key: undefined
+            titleVal: this.state.titleVal.trim()
         })
-        this.props.navigation.replace('StickyBlicky Notes');
+
+        if (this.state.titleVal === "") {
+            alert("Title cannot be empty")
+        }
+        else {
+            this.props.editNote(this.state.titleVal, this.state.note, this.state.key);
+            this.setState({
+                titleVal: "",
+                note: "",
+                key: undefined
+            })
+            this.props.navigation.replace('StickyBlicky Notes');
+        }
     }
 
     componentWillMount() {
@@ -48,19 +67,18 @@ class NotesScreen extends React.Component {
 
         var button;
         if (this.state.key != undefined) {
-            button = (/*<TouchableOpacity onPress={this.editNote} style={styles.createButton}>
-                <Text style={styles.createButtonText}>Save</Text>
-            </TouchableOpacity>*/
-
-                <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-                    <Text style={styles.createButtonText}>Save</Text>
+            button = (
+                <ActionButton.Item buttonColor='#9b59b6' title="Save Note" onPress={this.editNote}>
+                    <Icon name="md-save" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
             )
         }
         else {
-            button = (<TouchableOpacity onPress={this.createNote} style={styles.createButton}>
-                <Text style={styles.createButtonText}>Create</Text>
-            </TouchableOpacity>)
+            button = (
+                <ActionButton.Item buttonColor='#9b59b6' title="Create Note" onPress={this.createNote}>
+                    <Icon name="md-create" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+            )
         }
 
         return (
@@ -82,7 +100,14 @@ class NotesScreen extends React.Component {
                     value={this.state.note}
                     multiline={true}
                     numberOfLines={42} />
-                {button}
+                <ActionButton buttonColor="#f4511e">
+                    <ActionButton.Item buttonColor='#1abc9c' title="Change Colour" onPress={() => { }}>
+                        <Icon name="md-brush" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+
+                    {button}
+
+                </ActionButton>
             </View>
         )
     }
@@ -105,6 +130,11 @@ const styles = StyleSheet.create({
     createButtonText: {
         color: '#fff',
         fontSize: 14,
+    },
+    actionButtonIcon: {
+        fontSize: 20,
+        height: 22,
+        color: 'white',
     },
     title: {
         height: 60,
