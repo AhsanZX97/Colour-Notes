@@ -4,14 +4,37 @@ import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {
+    MenuProvider,
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+    renderers
+} from 'react-native-popup-menu';
 
+const { SlideInMenu } = renderers;
+
+const colourScheme = [
+    Purple = {
+        name: "Purple",
+        titleColor: "#e7cfff",
+        borderColor: "#723226",
+        noteColor: "#f2e6ff",
+        placeholderTextColor: "#696969"
+    }
+]
 
 class NotesScreen extends React.Component {
 
     state = {
         titleVal: "",
         note: "",
-        key: undefined
+        key: undefined,
+        titleColor: "#e7cfff",
+        borderColor: "#723226",
+        noteColor: "#f2e6ff",
+        placeholderTextColor: "#696969"
     }
 
     createNote = () => {
@@ -52,6 +75,10 @@ class NotesScreen extends React.Component {
         }
     }
 
+    selectColour = (colour) => {
+        alert(colour)
+    }
+
     componentWillMount() {
         if (this.props.route.params != undefined) {
             var note = this.props.route.params.note;
@@ -82,33 +109,52 @@ class NotesScreen extends React.Component {
         }
 
         return (
-            <View style={{ flex: 1 }}>
-                <TextInput
-                    style={styles.title}
-                    placeholder="ADD TITLE..."
-                    placeholderTextColor="#696969"
-                    ref={(el) => { this.titleVal = el; }}
-                    onChangeText={(titleVal) => this.setState({ titleVal })}
-                    value={this.state.titleVal}
-                />
-                <TextInput underlineColorAndroid="transparent"
-                    style={styles.note}
-                    placeholder="Add Notes..."
-                    placeholderTextColor="#696969"
-                    ref={(el) => { this.note = el; }}
-                    onChangeText={(note) => this.setState({ note })}
-                    value={this.state.note}
-                    multiline={true}
-                    numberOfLines={42} />
-                <ActionButton buttonColor="#f4511e">
-                    <ActionButton.Item buttonColor='#1abc9c' title="Change Colour" onPress={() => { }}>
-                        <Icon name="md-brush" style={styles.actionButtonIcon} />
-                    </ActionButton.Item>
-
-                    {button}
-
-                </ActionButton>
-            </View>
+            <MenuProvider >
+                <View style={{ flex: 1 }}>
+                    <TextInput
+                        style={{
+                            height: 60,
+                            backgroundColor: this.state.titleColor,
+                            borderBottomColor: this.state.borderColor,
+                            borderBottomWidth: 1,
+                        }}
+                        placeholder="ADD TITLE..."
+                        placeholderTextColor= {this.state.placeholderTextColor}
+                        ref={(el) => { this.titleVal = el; }}
+                        onChangeText={(titleVal) => this.setState({ titleVal })}
+                        value={this.state.titleVal}
+                    />
+                    <TextInput underlineColorAndroid="transparent"
+                        style={{
+                            backgroundColor: this.state.noteColor,
+                            textAlignVertical: "top"
+                        }}
+                        placeholder="Add Notes..."
+                        placeholderTextColor={this.state.placeholderTextColor}
+                        ref={(el) => { this.note = el; }}
+                        onChangeText={(note) => this.setState({ note })}
+                        value={this.state.note}
+                        multiline={true}
+                        numberOfLines={42} />
+                    <ActionButton buttonColor="#f4511e">
+                        <ActionButton.Item buttonColor='#1abc9c' title="Change Colour" onPress={() => { }}>
+                            <Menu renderer={SlideInMenu} onSelect={value => this.selectColour(value)}>
+                                <MenuTrigger>
+                                    <Icon name="md-brush" style={styles.actionButtonIcon} />
+                                </MenuTrigger>
+                                <MenuOptions>
+                                    <MenuOption value={'Purple'} text='Purple' />
+                                    <MenuOption value={'Red'} text='Red' />
+                                    <MenuOption value={'Blue'} text='Blue' />
+                                    <MenuOption value={'Green'} text='Green' />
+                                    <MenuOption value={'Black'} text='Black' />
+                                </MenuOptions>
+                            </Menu>
+                        </ActionButton.Item>
+                        {button}
+                    </ActionButton>
+                </View>
+            </MenuProvider>
         )
     }
 }
@@ -136,16 +182,7 @@ const styles = StyleSheet.create({
         height: 22,
         color: 'white',
     },
-    title: {
-        height: 60,
-        backgroundColor: '#e7cfff',
-        borderBottomColor: '#723226',
-        borderBottomWidth: 1,
-    },
-    note: {
-        backgroundColor: '#f2e6ff',
-        textAlignVertical: "top"
-    }
+
 })
 
 export default connect(null, { postNote, editNote })(NotesScreen);
