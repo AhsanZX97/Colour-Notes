@@ -22,7 +22,7 @@ const colourScheme = [
         borderColor: "#723226",
         noteColor: "#f2e6ff",
         placeholderTextColor: "#696969",
-        color:'black'
+        color: 'black'
     },
     Red = {
         name: "Red",
@@ -30,7 +30,7 @@ const colourScheme = [
         borderColor: "#722626",
         noteColor: "#FFE6E6",
         placeholderTextColor: "#696969",
-        color:'black'
+        color: 'black'
     },
     Blue = {
         name: "Blue",
@@ -38,7 +38,7 @@ const colourScheme = [
         borderColor: "#D2E0ED",
         noteColor: "#E2F1FF",
         placeholderTextColor: "#696969",
-        color:'black'
+        color: 'black'
     },
     Green = {
         name: "Green",
@@ -46,7 +46,7 @@ const colourScheme = [
         borderColor: "#D4E7D0",
         noteColor: "#E4F9E0",
         placeholderTextColor: "#696969",
-        color:'black'
+        color: 'black'
     },
     Black = {
         name: "Black",
@@ -54,7 +54,7 @@ const colourScheme = [
         borderColor: "#747474",
         noteColor: "#696969",
         placeholderTextColor: "#BFBFBF",
-        color:'white'
+        color: 'white'
     },
 ]
 
@@ -69,7 +69,7 @@ class NotesScreen extends React.Component {
         borderColor: "#723226",
         noteColor: "#f2e6ff",
         placeholderTextColor: "#696969",
-        color:'black'
+        color: 'black'
     }
 
     createNote = () => {
@@ -82,10 +82,25 @@ class NotesScreen extends React.Component {
             alert("Title cannot be empty")
         }
         else {
-            this.props.postNote(this.state.titleVal, this.state.note);
+            var colourScheme = {
+                Color: this.state.Color,
+                titleColor: this.state.titleColor,
+                borderColor: this.state.borderColor,
+                noteColor: this.state.noteColor,
+                placeholderTextColor: this.state.placeholderTextColor,
+                color: this.state.color
+            }
+            console.log(colourScheme);
+            this.props.postNote(this.state.titleVal, this.state.note, colourScheme);
             this.setState({
                 titleVal: "",
-                note: ""
+                note: "",
+                Color: "Purple",
+                titleColor: "#e7cfff",
+                borderColor: "#723226",
+                noteColor: "#f2e6ff",
+                placeholderTextColor: "#696969",
+                color: 'black'
             })
             this.props.navigation.replace('StickyBlicky Notes');
         }
@@ -100,11 +115,25 @@ class NotesScreen extends React.Component {
             alert("Title cannot be empty")
         }
         else {
-            this.props.editNote(this.state.titleVal, this.state.note, this.state.key);
+            var colourScheme = {
+                Color: this.state.Color,
+                titleColor: this.state.titleColor,
+                borderColor: this.state.borderColor,
+                noteColor: this.state.noteColor,
+                placeholderTextColor: this.state.placeholderTextColor,
+                color: this.state.color
+            }
+            this.props.editNote(this.state.titleVal, this.state.note, colourScheme, this.state.key);
             this.setState({
                 titleVal: "",
                 note: "",
-                key: undefined
+                key: undefined,
+                Color: "Purple",
+                titleColor: "#e7cfff",
+                borderColor: "#723226",
+                noteColor: "#f2e6ff",
+                placeholderTextColor: "#696969",
+                color: 'black'
             })
             this.props.navigation.replace('StickyBlicky Notes');
         }
@@ -131,7 +160,13 @@ class NotesScreen extends React.Component {
             this.setState({
                 titleVal: note.title,
                 note: note.noteText,
-                key: note.key
+                key: note.key,
+                Color: note.colorScheme.Color,
+                titleColor: note.colorScheme.titleColor,
+                borderColor: note.colorScheme.borderColor,
+                noteColor: note.colorScheme.noteColor,
+                placeholderTextColor: note.colorScheme.placeholderTextColor,
+                color: note.colorScheme.color
             })
         }
     }
@@ -163,7 +198,7 @@ class NotesScreen extends React.Component {
                             backgroundColor: this.state.titleColor,
                             borderBottomColor: this.state.borderColor,
                             borderBottomWidth: 1,
-                            color:this.state.color
+                            color: this.state.color
                         }}
                         placeholder="ADD TITLE..."
                         placeholderTextColor={this.state.placeholderTextColor}
