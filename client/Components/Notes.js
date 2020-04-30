@@ -6,10 +6,23 @@ import { connect } from 'react-redux';
 
 class Notes extends Component {
     render() {
+        const { val } = this.props;
+        console.log(val)
         return (
-            <View key={this.props.keyval} style={styles.note}>
-                <Text style={styles.noteText}>{this.props.val.title}</Text>
-                <Text style={styles.noteText}>{this.props.val.note}</Text>
+            <View key={this.props.keyval} style={{
+                position: 'relative',
+                padding: 20,
+                backgroundColor: val.colorScheme.noteColor,
+                borderBottomWidth: 2,
+                borderBottomColor: val.colorScheme.borderColor,
+            }}>
+                <Text style={{
+                    fontSize: 18,
+                    color: val.colorScheme.color,
+                }}>{val.title}</Text>
+                <Text style={{
+                    color: val.colorScheme.color,
+                }}>{val.noteText.length > 40 ? val.noteText.substring(0,40) + '...' : val.noteText}</Text>
                 <TouchableOpacity onPress={deleteNote(this.props.keyval)} style={styles.noteDelete}>
                     <Text style={styles.noteDeleteText}>Delete</Text>
                 </TouchableOpacity>
@@ -19,18 +32,6 @@ class Notes extends Component {
 }
 
 const styles = StyleSheet.create({
-    note: {
-        position: 'relative',
-        padding: 20,
-        paddingRight: 100,
-        borderBottomWidth: 2,
-        borderBottomColor: '#ededed',
-    },
-    noteText: {
-        paddingLeft: 20,
-        borderLeftWidth: 10,
-        borderLeftColor: '#e91e63',
-    },
     noteDelete: {
         position: 'absolute',
         justifyContent: 'center',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     },
     noteDeleteText: {
         color: "white",
-    }
+    },
 });
 
 export default connect(null, { deleteNote })(Notes);

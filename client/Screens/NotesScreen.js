@@ -198,7 +198,8 @@ class NotesScreen extends React.Component {
                             backgroundColor: this.state.titleColor,
                             borderBottomColor: this.state.borderColor,
                             borderBottomWidth: 1,
-                            color: this.state.color
+                            color: this.state.color,
+                            fontSize: 18
                         }}
                         placeholder="ADD TITLE..."
                         placeholderTextColor={this.state.placeholderTextColor}
