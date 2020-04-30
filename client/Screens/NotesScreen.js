@@ -18,42 +18,42 @@ const { SlideInMenu } = renderers;
 const colourScheme = [
     Purple = {
         name: "Purple",
-        titleColor: "#e7cfff",
-        borderColor: "#723226",
-        noteColor: "#f2e6ff",
-        placeholderTextColor: "#696969",
+        titleColor: "#9E2A9E",
+        borderColor: "#B053B0",
+        noteColor: "#C37DC3",
+        placeholderTextColor: "#FAFAFA",
         color: 'black'
     },
     Red = {
         name: "Red",
-        titleColor: "#FFCFCF",
-        borderColor: "#722626",
-        noteColor: "#FFE6E6",
-        placeholderTextColor: "#696969",
+        titleColor: "#9E2A2A",
+        borderColor: "#B05353",
+        noteColor: "#C37D7D",
+        placeholderTextColor: "#FAFAFA",
         color: 'black'
     },
     Blue = {
         name: "Blue",
-        titleColor: "#CDE9FF",
-        borderColor: "#D2E0ED",
-        noteColor: "#E2F1FF",
-        placeholderTextColor: "#696969",
+        titleColor: "#2A2A94",
+        borderColor: "#5353A9",
+        noteColor: "#7D7DBD",
+        placeholderTextColor: "#FAFAFA",
         color: 'black'
     },
     Green = {
         name: "Green",
-        titleColor: "#CBF1C4",
-        borderColor: "#D4E7D0",
-        noteColor: "#E4F9E0",
-        placeholderTextColor: "#696969",
+        titleColor: "#2A7D2A",
+        borderColor: "#539653",
+        noteColor: "#7DAF7D",
+        placeholderTextColor: "#FAFAFA",
         color: 'black'
     },
     Black = {
         name: "Black",
-        titleColor: "#494745",
-        borderColor: "#747474",
-        noteColor: "#696969",
-        placeholderTextColor: "#BFBFBF",
+        titleColor: "#2A2A2A",
+        borderColor: "#535353",
+        noteColor: "#7D7D7D",
+        placeholderTextColor: "#FAFAFA",
         color: 'white'
     },
 ]
@@ -65,10 +65,10 @@ class NotesScreen extends React.Component {
         note: "",
         key: undefined,
         Color: "Purple",
-        titleColor: "#e7cfff",
-        borderColor: "#723226",
-        noteColor: "#f2e6ff",
-        placeholderTextColor: "#696969",
+        titleColor: "#9E2A9E",
+        borderColor: "#B053B0",
+        noteColor: "#C37DC3",
+        placeholderTextColor: "#FAFAFA",
         color: 'black'
     }
 
