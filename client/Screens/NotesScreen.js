@@ -64,7 +64,7 @@ class NotesScreen extends React.Component {
         titleVal: "",
         note: "",
         key: undefined,
-        name: "Purple",
+        Color: "Purple",
         titleColor: "#E7CFFF",
         borderColor: "#E1D6ED",
         noteColor: "#F2E6FF",

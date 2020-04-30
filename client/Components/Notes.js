@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { deleteNote } from '../Actions'
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 class Notes extends Component {
@@ -22,9 +23,9 @@ class Notes extends Component {
                 }}>{val.title}</Text>
                 <Text style={{
                     color: val.colorScheme.color,
-                }}>{val.noteText.length > 40 ? val.noteText.substring(0,40) + '...' : val.noteText}</Text>
+                }}>{val.noteText.length > 40 ? val.noteText.substring(0, 40) + '...' : val.noteText}</Text>
                 <TouchableOpacity onPress={deleteNote(this.props.keyval)} style={styles.noteDelete}>
-                    <Text style={styles.noteDeleteText}>Delete</Text>
+                    <Icon name="md-trash" style={styles.actionButtonIcon} />
                 </TouchableOpacity>
             </View>
         )
@@ -44,6 +45,10 @@ const styles = StyleSheet.create({
     },
     noteDeleteText: {
         color: "white",
+    },
+    actionButtonIcon: {
+        fontSize: 30,
+        color: 'white',
     },
 });
 
