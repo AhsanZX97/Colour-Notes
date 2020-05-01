@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Notes from '../Components/Notes'
 import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
@@ -34,7 +34,9 @@ class HomeScreen extends React.Component {
 
         return (
             <View style={{ flex: 1 }}>
-                {front}
+                <ScrollView style={styles.scrollContainer}>
+                    {front}
+                </ScrollView>
                 <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
