@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 class Notes extends Component {
     render() {
         const { val } = this.props;
-        console.log(val)
         return (
             <View key={this.props.keyval} style={{
                 position: 'relative',

@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Loader from 'react-native-modal-loader';
 import {
     MenuProvider,
     Menu,
@@ -69,74 +70,83 @@ class NotesScreen extends React.Component {
         borderColor: "#E1D6ED",
         noteColor: "#F2E6FF",
         placeholderTextColor: "#5c5c5c",
-        color: 'black'
+        color: 'black',
+        submit: false
     }
 
     createNote = () => {
 
         this.setState({
-            titleVal: this.state.titleVal.trim()
+            submit: true,
         })
 
-        if (this.state.titleVal === "") {
-            alert("Title cannot be empty")
-        }
-        else {
-            var colourScheme = {
-                Color: this.state.Color,
-                titleColor: this.state.titleColor,
-                borderColor: this.state.borderColor,
-                noteColor: this.state.noteColor,
-                placeholderTextColor: this.state.placeholderTextColor,
-                color: this.state.color
+        console.log(this.state.submit);
+
+        setTimeout(() => {
+            if (this.state.titleVal.trim() === "") {
+                alert("Title cannot be empty")
             }
-            console.log(colourScheme);
-            this.props.postNote(this.state.titleVal, this.state.note, colourScheme);
-            this.setState({
-                titleVal: "",
-                note: "",
-                Color: "Purple",
-                titleColor: "#e7cfff",
-                borderColor: "#723226",
-                noteColor: "#f2e6ff",
-                placeholderTextColor: "#696969",
-                color: 'black'
-            })
-            this.props.navigation.replace('StickyBlicky Notes');
-        }
+            else {
+                var colourScheme = {
+                    Color: this.state.Color,
+                    titleColor: this.state.titleColor,
+                    borderColor: this.state.borderColor,
+                    noteColor: this.state.noteColor,
+                    placeholderTextColor: this.state.placeholderTextColor,
+                    color: this.state.color
+                }
+                this.props.postNote(this.state.titleVal, this.state.note, colourScheme);
+                this.setState({
+                    titleVal: "",
+                    note: "",
+                    Color: "Purple",
+                    titleColor: "#e7cfff",
+                    borderColor: "#723226",
+                    noteColor: "#f2e6ff",
+                    placeholderTextColor: "#696969",
+                    color: 'black',
+                    submit: false
+                })
+                this.props.navigation.replace('StickyBlicky Notes');
+            }
+        }, 1)
+
     }
 
     editNote = () => {
         this.setState({
-            titleVal: this.state.titleVal.trim()
+            submit: true,
         })
 
-        if (this.state.titleVal === "") {
-            alert("Title cannot be empty")
-        }
-        else {
-            var colourScheme = {
-                Color: this.state.Color,
-                titleColor: this.state.titleColor,
-                borderColor: this.state.borderColor,
-                noteColor: this.state.noteColor,
-                placeholderTextColor: this.state.placeholderTextColor,
-                color: this.state.color
+        setTimeout(() => {
+            if (this.state.titleVal.trim() === "") {
+                alert("Title cannot be empty")
             }
-            this.props.editNote(this.state.titleVal, this.state.note, colourScheme, this.state.key);
-            this.setState({
-                titleVal: "",
-                note: "",
-                key: undefined,
-                Color: "Purple",
-                titleColor: "#e7cfff",
-                borderColor: "#723226",
-                noteColor: "#f2e6ff",
-                placeholderTextColor: "#696969",
-                color: 'black'
-            })
-            this.props.navigation.replace('StickyBlicky Notes');
-        }
+            else {
+                var colourScheme = {
+                    Color: this.state.Color,
+                    titleColor: this.state.titleColor,
+                    borderColor: this.state.borderColor,
+                    noteColor: this.state.noteColor,
+                    placeholderTextColor: this.state.placeholderTextColor,
+                    color: this.state.color
+                }
+                this.props.editNote(this.state.titleVal, this.state.note, colourScheme, this.state.key);
+                this.setState({
+                    titleVal: "",
+                    note: "",
+                    key: undefined,
+                    Color: "Purple",
+                    titleColor: "#e7cfff",
+                    borderColor: "#723226",
+                    noteColor: "#f2e6ff",
+                    placeholderTextColor: "#696969",
+                    color: 'black',
+                    submit: false
+                })
+                this.props.navigation.replace('StickyBlicky Notes');
+            }
+        }, 1)
     }
 
     selectColour = (colour) => {
@@ -190,8 +200,10 @@ class NotesScreen extends React.Component {
         }
 
         return (
+
             <MenuProvider >
                 <View style={{ flex: 1 }}>
+                    <Loader loading={this.state.submit} color="#ff66be" />
                     <TextInput
                         style={{
                             height: 60,
@@ -266,7 +278,9 @@ const styles = StyleSheet.create({
         height: 22,
         color: 'white',
     },
-
+    spinnerTextStyle: {
+        color: '#FFF'
+    }
 })
 
 export default connect(null, { postNote, editNote })(NotesScreen);
