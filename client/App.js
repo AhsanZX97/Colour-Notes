@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import HomeScreen from './Screens/HomeScreen'
 import NotesScreen from './Screens/NotesScreen'
 import { Provider } from 'react-redux'
@@ -10,10 +10,32 @@ import Reducers from './Reducers'
 import LoginScreen from './Screens/LoginScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 import ForgotScreen from './Screens/ForgotScreen'
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Alert } from "react-native";
+
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
+
+  _handleBackPress(navigation) {
+    Alert.alert(
+      "Discard changes?",
+      "Your note will be lost if you confirm.",
+      [
+        {
+          text: "No, continue editing",
+          onPress: () => console.log("No, continue editing")
+        },
+        {
+          text: "Yes, discard changes",
+          onPress: () => navigation.goBack(),
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  }
 
   render() {
 
@@ -52,6 +74,9 @@ export default class App extends React.Component {
               headerTitleStyle: {
                 fontWeight: 'bold',
               },
+              headerLeft: () => {
+                return <HeaderBackButton style= {{color: 'white'}} onPress = {({navigation}) => this._handleBackPress(navigation)} />
+              }
             }} />
           </Stack.Navigator>
 
