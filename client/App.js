@@ -12,7 +12,9 @@ import SignUpScreen from './Screens/SignUpScreen';
 import ForgotScreen from './Screens/ForgotScreen'
 import { Alert } from "react-native";
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
 
 const Stack = createStackNavigator();
 
@@ -44,6 +46,7 @@ export default class App extends React.Component {
     return (
       <Provider store={state}>
 
+        <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.light}>
           <NavigationContainer>
 
