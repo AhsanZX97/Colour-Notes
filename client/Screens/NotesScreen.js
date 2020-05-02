@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Loader from 'react-native-modal-loader';
 import {
     MenuProvider,
@@ -13,6 +12,8 @@ import {
     MenuTrigger,
     renderers
 } from 'react-native-popup-menu';
+import { Icon ,Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+
 
 const { SlideInMenu } = renderers;
 
@@ -58,6 +59,10 @@ const colourScheme = [
         color: 'white'
     },
 ]
+
+const BackIcon = (props) => (
+    <Icon {...props} name='arrow-back'/>
+);
 
 class NotesScreen extends React.Component {
 
@@ -181,6 +186,10 @@ class NotesScreen extends React.Component {
         }
     }
 
+    renderBackAction = () => (
+        <TopNavigationAction icon={BackIcon} />
+    );
+
     render() {
 
         var button;
@@ -202,8 +211,13 @@ class NotesScreen extends React.Component {
         return (
 
             <MenuProvider >
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1 ,     paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
                     <Loader loading={this.state.submit} color="#ff66be" />
+                    <TopNavigation
+                        alignment='center'
+                        title='Notes'
+                        accessoryLeft={this.renderBackAction}
+                    />
                     <TextInput
                         style={{
                             height: 60,
