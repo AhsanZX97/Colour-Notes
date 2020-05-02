@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert} from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
@@ -12,7 +12,7 @@ import {
     MenuTrigger,
     renderers
 } from 'react-native-popup-menu';
-import { Icon ,Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 
 
 const { SlideInMenu } = renderers;
@@ -61,7 +61,7 @@ const colourScheme = [
 ]
 
 const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back'/>
+    <Icon {...props} name='arrow-back' />
 );
 
 class NotesScreen extends React.Component {
@@ -76,7 +76,8 @@ class NotesScreen extends React.Component {
         noteColor: "#F2E6FF",
         placeholderTextColor: "#5c5c5c",
         color: 'black',
-        submit: false
+        submit: false,
+        edited: false
     }
 
     createNote = () => {
@@ -186,10 +187,28 @@ class NotesScreen extends React.Component {
         }
     }
 
-    renderBackAction = () => (
-        <TopNavigationAction icon={BackIcon} />
-    );
+    back = (props) => {
+        console.log("back")
+        if (this.state.edited) {
+            Alert.alert(
+                "Discard changes?",
+                "Would you like to discard changes?",
+                [
+                    {
+                        text: "Discard changes",
+                        onPress: () => this.props.navigation.goBack(),
+                        style: "cancel"
+                    },
+                    { text: "No"}
+                ],
+                { cancelable: false }
+            );
+        }
+        else {
 
+            this.props.navigation.goBack();
+        }
+    }
     render() {
 
         var button;
@@ -211,12 +230,14 @@ class NotesScreen extends React.Component {
         return (
 
             <MenuProvider >
-                <View style={{ flex: 1 ,     paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
+                <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
                     <Loader loading={this.state.submit} color="#ff66be" />
                     <TopNavigation
                         alignment='center'
                         title='Notes'
-                        accessoryLeft={this.renderBackAction}
+                        accessoryLeft={() => {
+                            return <TopNavigationAction icon={BackIcon} onPress={this.back} />
+                        }}
                     />
                     <TextInput
                         style={{
@@ -230,7 +251,7 @@ class NotesScreen extends React.Component {
                         placeholder="ADD TITLE..."
                         placeholderTextColor={this.state.placeholderTextColor}
                         ref={(el) => { this.titleVal = el; }}
-                        onChangeText={(titleVal) => this.setState({ titleVal })}
+                        onChangeText={(titleVal) => this.setState({ titleVal, edited: true })}
                         value={this.state.titleVal}
                     />
                     <TextInput underlineColorAndroid="transparent"
@@ -242,7 +263,7 @@ class NotesScreen extends React.Component {
                         placeholder="Add Notes..."
                         placeholderTextColor={this.state.placeholderTextColor}
                         ref={(el) => { this.note = el; }}
-                        onChangeText={(note) => this.setState({ note })}
+                        onChangeText={(note) => this.setState({ note, edited: true })}
                         value={this.state.note}
                         multiline={true}
                         numberOfLines={42} />
