@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler} from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
@@ -64,6 +64,19 @@ const BackIcon = (props) => (
     <Icon {...props} name='arrow-back' />
 );
 
+const MenuIcon = (props) => (
+    <Icon {...props} name='more-vertical' />
+);
+
+const InfoIcon = (props) => (
+    <Icon {...props} name='info' />
+);
+
+const LogoutIcon = (props) => (
+    <Icon {...props} name='log-out' />
+);
+
+
 class NotesScreen extends React.Component {
 
     state = {
@@ -77,7 +90,8 @@ class NotesScreen extends React.Component {
         placeholderTextColor: "#5c5c5c",
         color: 'black',
         submit: false,
-        edited: false
+        edited: false,
+        menuVisible: false,
     }
 
     createNote = () => {
@@ -85,7 +99,7 @@ class NotesScreen extends React.Component {
         this.setState({
             submit: true,
         })
-        
+
         setTimeout(() => {
             if (this.state.titleVal.trim() === "") {
                 alert("Title cannot be empty")
@@ -162,7 +176,8 @@ class NotesScreen extends React.Component {
                     borderColor: colourScheme[i].borderColor,
                     noteColor: colourScheme[i].noteColor,
                     placeholderTextColor: colourScheme[i].placeholderTextColor,
-                    color: colourScheme[i].color
+                    color: colourScheme[i].color,
+                    edited: true
                 })
             }
         }
@@ -203,13 +218,13 @@ class NotesScreen extends React.Component {
                         text: "Discard changes",
                         onPress: () => {
                             this.setState({
-                                edited:false
+                                edited: false
                             })
                             this.props.navigation.goBack()
                         },
                         style: "cancel"
                     },
-                    { 
+                    {
                         text: "No",
                     }
                 ],
@@ -220,6 +235,14 @@ class NotesScreen extends React.Component {
             this.props.navigation.goBack()
         }
     }
+
+    toggleMenu = () => {
+        this.setState({
+            menuVisible: !this.state.menuVisible
+        })
+        console.log(this.state.menuVisible)
+    }
+
     render() {
 
         var button;
@@ -249,12 +272,30 @@ class NotesScreen extends React.Component {
                         accessoryLeft={() => {
                             return <TopNavigationAction icon={BackIcon} onPress={this.back} />
                         }}
-                        style= {{
-                            backgroundColor: '#FFF2AB',
-                            borderBottomColor: '#EDE6C2',
-                            borderBottomWidth: 1,
-                            color: 'black'
+                        accessoryRight={() => {
+                            return ( 
+                                <React.Fragment>
+                                    <OverflowMenu
+                                        anchor={() => {
+                                            return <TopNavigationAction icon={MenuIcon} onPress={this.toggleMenu} />
+                                        }}
+                                        visible={this.state.menuVisible}
+                                        onBackdropPress={this.toggleMenu}>
+                                        <MenuItem accessoryLeft={InfoIcon} title='Purple' onPress = {() => { this.selectColour("Purple")}} />
+                                        <MenuItem accessoryLeft={LogoutIcon} title='Red' onPress = {() => { this.selectColour("Red")}} />
+                                        <MenuItem accessoryLeft={LogoutIcon} title='Blue' onPress = {() => { this.selectColour("Blue")}} />
+                                        <MenuItem accessoryLeft={LogoutIcon} title='Green' onPress = {() => { this.selectColour("Green")}} />
+                                        <MenuItem accessoryLeft={LogoutIcon} title='Black' onPress = {() => { this.selectColour("Black")}} />
+                                    </OverflowMenu> 
+                            </React.Fragment>
+                            ) 
                         }}
+                        style={{
+                        backgroundColor: '#FFF2AB',
+                        borderBottomColor: '#EDE6C2',
+                        borderBottomWidth: 1,
+                        color: 'black'
+                    }}
                     />
                     <TextInput
                         style={{
