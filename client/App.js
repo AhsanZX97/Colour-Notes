@@ -42,14 +42,7 @@ export default class App extends React.Component {
                 headerShown: false
               }} />
               <Stack.Screen name="StickyBlicky Notes" component={HomeScreen} options={{
-                headerStyle: {
-                  backgroundColor: '#f4511e',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                },
-                headerLeft: false
+                headerShown: false
               }} />
               <Stack.Screen name="Notes" component={NotesScreen} options={{
                 headerShown: false

@@ -85,9 +85,7 @@ class NotesScreen extends React.Component {
         this.setState({
             submit: true,
         })
-
-        console.log(this.state.submit);
-
+        
         setTimeout(() => {
             if (this.state.titleVal.trim() === "") {
                 alert("Title cannot be empty")
@@ -250,6 +248,12 @@ class NotesScreen extends React.Component {
                         title='Notes'
                         accessoryLeft={() => {
                             return <TopNavigationAction icon={BackIcon} onPress={this.back} />
+                        }}
+                        style= {{
+                            backgroundColor: '#FFF2AB',
+                            borderBottomColor: '#EDE6C2',
+                            borderBottomWidth: 1,
+                            color: 'black'
                         }}
                     />
                     <TextInput

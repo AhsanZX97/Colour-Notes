@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView , BackHandler} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, BackHandler,     Platform, StatusBar } from 'react-native';
 import Notes from '../Components/Notes'
 import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import firebase from '../db'
+import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 
 
 class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.props.getNotes();
-        BackHandler.addEventListener('hardwareBackPress',() =>{
+        BackHandler.addEventListener('hardwareBackPress', () => {
             return true
         });
     }
@@ -36,7 +37,17 @@ class HomeScreen extends React.Component {
             });
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 , paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
+                <TopNavigation
+                    alignment='center'
+                    title='Sticky Blicky Notes'
+                    style={{
+                        backgroundColor: '#FFF2AB',
+                        borderBottomColor: '#EDE6C2',
+                        borderBottomWidth: 1,
+                        color: 'black'
+                    }}
+                />
                 <ScrollView style={styles.scrollContainer}>
                     {front}
                 </ScrollView>
