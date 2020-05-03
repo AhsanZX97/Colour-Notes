@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView , BackHandler} from 'react-native';
 import Notes from '../Components/Notes'
 import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
@@ -11,6 +11,9 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.props.getNotes();
+        BackHandler.addEventListener('hardwareBackPress',() =>{
+            return true
+        });
     }
 
     logOut = () => {

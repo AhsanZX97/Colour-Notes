@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert} from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler} from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
@@ -187,8 +187,15 @@ class NotesScreen extends React.Component {
         }
     }
 
-    back = (props) => {
-        console.log("back")
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.back);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.back);
+    }
+
+    back = () => {
         if (this.state.edited) {
             Alert.alert(
                 "Discard changes?",
@@ -196,17 +203,23 @@ class NotesScreen extends React.Component {
                 [
                     {
                         text: "Discard changes",
-                        onPress: () => this.props.navigation.goBack(),
+                        onPress: () => {
+                            this.setState({
+                                edited:false
+                            })
+                            this.props.navigation.goBack()
+                        },
                         style: "cancel"
                     },
-                    { text: "No"}
+                    { 
+                        text: "No",
+                    }
                 ],
                 { cancelable: false }
             );
         }
         else {
-
-            this.props.navigation.goBack();
+            this.props.navigation.goBack()
         }
     }
     render() {

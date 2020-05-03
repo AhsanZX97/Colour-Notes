@@ -20,25 +20,6 @@ const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
-  _handleBackPress(navigation) {
-    Alert.alert(
-      "Discard changes?",
-      "Your note will be lost if you confirm.",
-      [
-        {
-          text: "No, continue editing",
-          onPress: () => console.log("No, continue editing")
-        },
-        {
-          text: "Yes, discard changes",
-          onPress: () => navigation.goBack(),
-          style: "cancel"
-        }
-      ],
-      { cancelable: false }
-    );
-  }
-
   render() {
 
     state = createStore(Reducers, {}, applyMiddleware(ReduxThunk));
@@ -72,16 +53,6 @@ export default class App extends React.Component {
               }} />
               <Stack.Screen name="Notes" component={NotesScreen} options={{
                 headerShown: false
-                /*headerStyle: {
-                  backgroundColor: '#f4511e',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                },
-                headerLeft: () => {
-                  return <HeaderBackButton style= {{color: 'white'}} onPress = {({navigation}) => this._handleBackPress(navigation)} />
-                }*/
               }} />
             </Stack.Navigator>
 
