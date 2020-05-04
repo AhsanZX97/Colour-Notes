@@ -28,7 +28,8 @@ export function getNotes() {
 export function postNote(title, noteText, colorScheme) {
     return (dispatch) => {
         var uid = firebase.auth().currentUser.uid;
-        firebase.database().ref(`/${uid}/notes`).push({ title, noteText, colorScheme})
+        var time = Date.now();
+        firebase.database().ref(`/${uid}/notes`).push({ title, noteText, colorScheme, time})
     }
 }
 
@@ -42,6 +43,6 @@ export function deleteNote(key) {
 export function editNote(title, noteText, colorScheme, key) {
     return (dispatch) => {
         var uid = firebase.auth().currentUser.uid;
-        firebase.database().ref(`/${uid}/notes`).child(key).update({ title, noteText , colorScheme})
+        firebase.database().ref(`/${uid}/notes`).child(key).update({ title, noteText , colorScheme, time})
     }
 }

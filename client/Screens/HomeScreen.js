@@ -27,6 +27,8 @@ class HomeScreen extends React.Component {
 
         const front = this.props.listOfNotes == 0 ? <Text>Add notes to see them displayed</Text> :
             this.props.listOfNotes.map((val, key) => {
+                var d = new Date(val.time)
+                console.log(d.toString("MM"))
                 return (
                     <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                         note: val
