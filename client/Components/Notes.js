@@ -6,8 +6,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 class Notes extends Component {
+
     render() {
         const { val } = this.props;
+        var d = new Date(val.time)
         return (
             <View key={this.props.keyval} style={{
                 position: 'relative',
@@ -19,7 +21,15 @@ class Notes extends Component {
                 <Text style={{
                     fontSize: 18,
                     color: val.colorScheme.color,
-                }}>{val.title}</Text>
+                }}>{val.title}
+                    <Text style={{
+                        fontSize: 9,
+                        color: 'grey'
+                    }}>
+                        {d.toUTCString().substring(0, d.toUTCString().length - 7)}
+                    </Text>
+                </Text>
+
                 <Text style={{
                     color: val.colorScheme.color,
                 }}>{val.noteText.length > 40 ? val.noteText.substring(0, 40) + '...' : val.noteText}</Text>
