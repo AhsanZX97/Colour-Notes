@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
@@ -12,7 +12,7 @@ import {
     MenuTrigger,
     renderers
 } from 'react-native-popup-menu';
-import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Icon, Spinner, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
 
 
 const { SlideInMenu } = renderers;
@@ -68,13 +68,16 @@ const MenuIcon = (props) => (
     <Icon {...props} name='more-vertical' />
 );
 
-const InfoIcon = (props) => (
-    <Icon {...props} name='info' />
+const BrushIcon = (props) => (
+    <Icon {...props} name='brush' />
 );
 
-const LogoutIcon = (props) => (
-    <Icon {...props} name='log-out' />
+const LoadingIndicator = (props) => (
+    <View style={[props.style, styles.indicator]}>
+        <Spinner size='small' />
+    </View>
 );
+
 
 
 class NotesScreen extends React.Component {
@@ -125,7 +128,7 @@ class NotesScreen extends React.Component {
                     color: 'black',
                     submit: false
                 })
-                this.props.navigation.replace('StickyBlicky Notes');
+                this.props.navigation.goBack();
             }
         }, 1)
 
@@ -162,7 +165,7 @@ class NotesScreen extends React.Component {
                     color: 'black',
                     submit: false
                 })
-                this.props.navigation.replace('StickyBlicky Notes');
+                this.props.navigation.goBack();
             }
         }, 1)
     }
@@ -209,6 +212,7 @@ class NotesScreen extends React.Component {
     }
 
     back = () => {
+        if (this.state.submit) return true;
         if (this.state.edited) {
             Alert.alert(
                 "Discard changes?",
@@ -246,18 +250,19 @@ class NotesScreen extends React.Component {
     render() {
 
         var button;
+        var load = this.state.submit ? LoadingIndicator : null;
         if (this.state.key != undefined) {
             button = (
-                <ActionButton.Item buttonColor='#9b59b6' title="Save Note" onPress={this.editNote}>
-                    <Icon name="md-save" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
+                <Button style={styles.button} appearance='outline' status='primary' onPress={this.editNote} style={styles.createButton} accessoryLeft={load}>
+                    SAVE
+                </Button>
             )
         }
         else {
             button = (
-                <ActionButton.Item buttonColor='#9b59b6' title="Create Note" onPress={this.createNote}>
-                    <Icon name="md-create" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
+                <Button style={styles.button} appearance='outline' status='primary' onPress={this.createNote} style={styles.createButton} accessoryLeft={load}>
+                    CREATE
+                </Button>
             )
         }
 
@@ -265,7 +270,6 @@ class NotesScreen extends React.Component {
 
             <MenuProvider >
                 <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
-                    <Loader loading={this.state.submit} color="#ff66be" />
                     <TopNavigation
                         alignment='center'
                         title='Notes'
@@ -273,7 +277,7 @@ class NotesScreen extends React.Component {
                             return <TopNavigationAction icon={BackIcon} onPress={this.back} />
                         }}
                         accessoryRight={() => {
-                            return ( 
+                            return (
                                 <React.Fragment>
                                     <OverflowMenu
                                         anchor={() => {
@@ -281,21 +285,21 @@ class NotesScreen extends React.Component {
                                         }}
                                         visible={this.state.menuVisible}
                                         onBackdropPress={this.toggleMenu}>
-                                        <MenuItem accessoryLeft={InfoIcon} title='Purple' onPress = {() => { this.selectColour("Purple")}} />
-                                        <MenuItem accessoryLeft={LogoutIcon} title='Red' onPress = {() => { this.selectColour("Red")}} />
-                                        <MenuItem accessoryLeft={LogoutIcon} title='Blue' onPress = {() => { this.selectColour("Blue")}} />
-                                        <MenuItem accessoryLeft={LogoutIcon} title='Green' onPress = {() => { this.selectColour("Green")}} />
-                                        <MenuItem accessoryLeft={LogoutIcon} title='Black' onPress = {() => { this.selectColour("Black")}} />
-                                    </OverflowMenu> 
-                            </React.Fragment>
-                            ) 
+                                        <MenuItem accessoryLeft={BrushIcon} title='Purple' onPress={() => { this.selectColour("Purple") }} />
+                                        <MenuItem accessoryLeft={BrushIcon} title='Red' onPress={() => { this.selectColour("Red") }} />
+                                        <MenuItem accessoryLeft={BrushIcon} title='Blue' onPress={() => { this.selectColour("Blue") }} />
+                                        <MenuItem accessoryLeft={BrushIcon} title='Green' onPress={() => { this.selectColour("Green") }} />
+                                        <MenuItem accessoryLeft={BrushIcon} title='Black' onPress={() => { this.selectColour("Black") }} />
+                                    </OverflowMenu>
+                                </React.Fragment>
+                            )
                         }}
                         style={{
-                        backgroundColor: '#FFF2AB',
-                        borderBottomColor: '#EDE6C2',
-                        borderBottomWidth: 1,
-                        color: 'black'
-                    }}
+                            backgroundColor: '#FFF2AB',
+                            borderBottomColor: '#EDE6C2',
+                            borderBottomWidth: 1,
+                            color: 'black'
+                        }}
                     />
                     <TextInput
                         style={{
@@ -325,23 +329,7 @@ class NotesScreen extends React.Component {
                         value={this.state.note}
                         multiline={true}
                         numberOfLines={42} />
-                    <ActionButton buttonColor="#f4511e">
-                        <ActionButton.Item buttonColor='#1abc9c' title="Change Colour" onPress={() => { }}>
-                            <Menu renderer={SlideInMenu} onSelect={value => this.selectColour(value)}>
-                                <MenuTrigger>
-                                    <Icon name="md-brush" style={styles.actionButtonIcon} />
-                                </MenuTrigger>
-                                <MenuOptions>
-                                    <MenuOption value={'Purple'} text='Purple' />
-                                    <MenuOption value={'Red'} text='Red' />
-                                    <MenuOption value={'Blue'} text='Blue' />
-                                    <MenuOption value={'Green'} text='Green' />
-                                    <MenuOption value={'Black'} text='Black' />
-                                </MenuOptions>
-                            </Menu>
-                        </ActionButton.Item>
-                        {button}
-                    </ActionButton>
+                    {button}
                 </View>
             </MenuProvider>
         )
@@ -354,13 +342,6 @@ const styles = StyleSheet.create({
         zIndex: 11,
         right: 20,
         bottom: 20,
-        backgroundColor: '#f4511e',
-        width: 70,
-        height: 40,
-        borderRadius: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 8,
     },
     createButtonText: {
         color: '#fff',
@@ -373,7 +354,11 @@ const styles = StyleSheet.create({
     },
     spinnerTextStyle: {
         color: '#FFF'
-    }
+    },
+    indicator: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
 
 export default connect(null, { postNote, editNote })(NotesScreen);
