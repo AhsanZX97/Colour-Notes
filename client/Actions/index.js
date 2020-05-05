@@ -11,7 +11,14 @@ export function getNotes() {
 
         var uid = firebase.auth().currentUser.uid;
 
-        firebase.database().ref(`/${uid}/notes`).on('value', snapshot => {
+        let dbRef = firebase.database().ref(`/${uid}/notes`).orderByChild('title');
+
+        dbRef.on('value', snapshot => {
+            var dataObj = {};
+            snapshot.forEach(function(child) {
+                console.log(child.val()) // NOW THE CHILDREN PRINT IN ORDER
+            });
+            console.log(snapshot.val())
             dispatch({
                 type: "NOTES_FETCH",
                 payload: snapshot.val()

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, BackHandler, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, BackHandler, Platform, StatusBar, Dimensions } from 'react-native';
 import Notes from '../Components/Notes'
 import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
@@ -10,6 +10,8 @@ import { Icon, Modal, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction
 const MenuIcon = (props) => (
     <Icon {...props} name='more-vertical' />
 );
+
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 class HomeScreen extends React.Component {
 
@@ -30,12 +32,20 @@ class HomeScreen extends React.Component {
         this.props.navigation.navigate('Login');
     }
 
-    sort = () => {
-
+    sort = (type) => {
+        console.log(this.props.listOfNotes)
+        switch(type) {
+            case 'Date':
+                return
+            case 'Name':
+                return
+            default:
+                return 
+        }
     }
 
     renderItem = ({ item }) => (
-        <ListItem title={`${item.title}`} />
+        <ListItem title={`${item.title}`} onPress={() => { this.sort(item.value) }}/>
     );
 
 
@@ -87,7 +97,8 @@ class HomeScreen extends React.Component {
                     onBackdropPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
                     <Card disabled={true}>
                         <List
-                            data={[{title: 'Sort By Date', value: "Date"}, {title: 'Sort By Name', value: "Name"}]}
+                            style={styles.modal}
+                            data={[{ title: 'Sort By Date', value: "Date" }, { title: 'Sort By Name', value: "Name" }]}
                             renderItem={this.renderItem}
                         />
                         <Button onPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
@@ -146,6 +157,9 @@ const styles = StyleSheet.create({
     },
     backdrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modal: {
+        width: screenWidth - 100,
     },
 })
 
