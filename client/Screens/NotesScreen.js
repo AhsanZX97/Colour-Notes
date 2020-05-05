@@ -244,7 +244,6 @@ class NotesScreen extends React.Component {
         this.setState({
             menuVisible: !this.state.menuVisible
         })
-        console.log(this.state.menuVisible)
     }
 
     render() {

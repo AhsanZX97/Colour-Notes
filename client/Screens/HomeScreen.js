@@ -5,10 +5,18 @@ import { getNotes } from '../Actions';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import firebase from '../db'
-import { Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Icon, Modal, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Card, Button, List, ListItem } from '@ui-kitten/components';
 
+const MenuIcon = (props) => (
+    <Icon {...props} name='more-vertical' />
+);
 
 class HomeScreen extends React.Component {
+
+    state = {
+        menuVisible: false,
+        sortVisible: false
+    }
 
     componentDidMount() {
         this.props.getNotes();
@@ -22,13 +30,21 @@ class HomeScreen extends React.Component {
         this.props.navigation.navigate('Login');
     }
 
+    sort = () => {
+
+    }
+
+    renderItem = ({ item }) => (
+        <ListItem title={`${item.title}`} />
+    );
+
+
     render() {
         const { navigation } = this.props;
 
         const front = this.props.listOfNotes == 0 ? <Text>Add notes to see them displayed</Text> :
             this.props.listOfNotes.map((val, key) => {
                 var d = new Date(val.time)
-                console.log(d.toString("MM"))
                 return (
                     <TouchableOpacity onPress={() => navigation.navigate('Notes', {
                         note: val
@@ -44,6 +60,20 @@ class HomeScreen extends React.Component {
                 <TopNavigation
                     alignment='center'
                     title='Sticky Blicky Notes'
+                    accessoryRight={() => {
+                        return (
+                            <React.Fragment>
+                                <OverflowMenu
+                                    anchor={() => {
+                                        return <TopNavigationAction icon={MenuIcon} onPress={() => { this.setState({ menuVisible: !this.state.menuVisible }) }} />
+                                    }}
+                                    visible={this.state.menuVisible}
+                                    onBackdropPress={() => { this.setState({ menuVisible: !this.state.menuVisible }) }}>
+                                    <MenuItem title='Sort By' onPress={() => this.setState({ sortVisible: !this.state.sortVisible, menuVisible: !this.state.menuVisible })} />
+                                </OverflowMenu>
+                            </React.Fragment>
+                        )
+                    }}
                     style={{
                         backgroundColor: '#FFF2AB',
                         borderBottomColor: '#EDE6C2',
@@ -51,6 +81,20 @@ class HomeScreen extends React.Component {
                         color: 'black'
                     }}
                 />
+                <Modal
+                    visible={this.state.sortVisible}
+                    backdropStyle={styles.backdrop}
+                    onBackdropPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
+                    <Card disabled={true}>
+                        <List
+                            data={[{title: 'Sort By Date', value: "Date"}, {title: 'Sort By Name', value: "Name"}]}
+                            renderItem={this.renderItem}
+                        />
+                        <Button onPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
+                            DISMISS
+                        </Button>
+                    </Card>
+                </Modal>
                 <ScrollView style={styles.scrollContainer}>
                     {front}
                 </ScrollView>
@@ -99,6 +143,9 @@ const styles = StyleSheet.create({
     signOutText: {
         color: '#fff',
         fontSize: 14,
+    },
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 })
 

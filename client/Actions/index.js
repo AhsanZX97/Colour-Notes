@@ -43,6 +43,7 @@ export function deleteNote(key) {
 export function editNote(title, noteText, colorScheme, key) {
     return (dispatch) => {
         var uid = firebase.auth().currentUser.uid;
+        var time = Date.now();
         firebase.database().ref(`/${uid}/notes`).child(key).update({ title, noteText , colorScheme, time})
     }
 }
