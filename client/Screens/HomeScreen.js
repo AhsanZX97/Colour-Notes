@@ -32,15 +32,15 @@ class HomeScreen extends React.Component {
         this.props.navigation.navigate('Login');
     }
 
-    sort = (type) => {
-        this.props.getNotes(type);
+    sort = (type,color) => {
+        this.props.getNotes(type, color);
         this.setState({
             sortVisible: !this.state.sortVisible
         })
     }
 
     renderItem = ({ item }) => (
-        <ListItem title={`${item.title}`} onPress={() => { this.sort(item.value) }}/>
+        <ListItem title={`${item.title}`} onPress={() => { this.sort(item.value, item.color) }}/>
     );
 
 
@@ -93,7 +93,15 @@ class HomeScreen extends React.Component {
                     <Card disabled={true}>
                         <List
                             style={styles.modal}
-                            data={[{ title: 'Sort By Date', value: "time" }, { title: 'Sort By Name', value: "title" }]}
+                            data={[
+                                { title: 'Sort By Date', value: "time" }, 
+                                { title: 'Sort By Name', value: "title" },
+                                { title: 'Sort By Purple Notes', value: "time", color: 'Purple'},
+                                { title: 'Sort By Red Notes', value: "time", color: 'Red'},
+                                { title: 'Sort By Blue Notes', value: "time", color: 'Blue'},
+                                { title: 'Sort By Green Notes', value: "time", color: 'Green'},
+                                { title: 'Sort By Black Notes', value: "time", color: 'Black'},
+                            ]}
                             renderItem={this.renderItem}
                         />
                         <Button onPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
