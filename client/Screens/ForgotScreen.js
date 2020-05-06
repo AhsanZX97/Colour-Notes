@@ -14,7 +14,7 @@ class ForgotScreen extends React.Component {
             if (user) {
                 this.props.navigation.navigate('StickyBlicky Notes');
             } else {
-                console.log("not logged in")
+
             }
         })
     }

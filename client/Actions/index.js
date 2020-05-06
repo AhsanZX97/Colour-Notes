@@ -9,9 +9,10 @@ export function getNotes(type, color) {
             payload: true
         })
 
-        var uid = firebase.auth().currentUser.uid;
+        var email = firebase.auth().currentUser.email.replace(/[^a-zA-Z0-9]/g, '');
+        console.log(email)
 
-        let dbRef = firebase.database().ref(`/${uid}/notes`).orderByChild(type);
+        let dbRef = firebase.database().ref(`/${email}/notes`).orderByChild(type);
 
         dbRef.on('value', snapshot => {
             var dataObj = new Object();
@@ -40,23 +41,23 @@ export function getNotes(type, color) {
 
 export function postNote(title, noteText, colorScheme) {
     return (dispatch) => {
-        var uid = firebase.auth().currentUser.uid;
+        var email = firebase.auth().currentUser.email.replace(/[^a-zA-Z0-9]/g, '');
         var time = - Date.now();
-        firebase.database().ref(`/${uid}/notes`).push({ title, noteText, colorScheme, time })
+        firebase.database().ref(`/${email}/notes`).push({ title, noteText, colorScheme, time })
     }
 }
 
 export function deleteNote(key) {
     return (dispatch) => {
-        var uid = firebase.auth().currentUser.uid;
-        firebase.database().ref(`/${uid}/notes/${key}`).remove()
+        var email = firebase.auth().currentUser.email.replace(/[^a-zA-Z0-9]/g, '');
+        firebase.database().ref(`/${email}/notes/${key}`).remove()
     }
 }
 
 export function editNote(title, noteText, colorScheme, key) {
     return (dispatch) => {
-        var uid = firebase.auth().currentUser.uid;
+        var email = firebase.auth().currentUser.email.replace(/[^a-zA-Z0-9]/g, '');
         var time = -Date.now();
-        firebase.database().ref(`/${uid}/notes`).child(key).update({ title, noteText, colorScheme, time })
+        firebase.database().ref(`/${email}/notes`).child(key).update({ title, noteText, colorScheme, time })
     }
 }

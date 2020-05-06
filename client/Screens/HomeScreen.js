@@ -11,6 +11,10 @@ const MenuIcon = (props) => (
     <Icon {...props} name='more-vertical' />
 );
 
+const AddIcon = (props) => (
+    <Icon {...props} name='plus' />
+);
+
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 class HomeScreen extends React.Component {
@@ -22,14 +26,20 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         this.props.getNotes('time');
-        BackHandler.addEventListener('hardwareBackPress', () => {
-            return true
-        });
+        BackHandler.addEventListener('hardwareBackPress', this.backhandlerclick);
+    }
+
+    backhandlerclick() {
+        return true;
     }
 
     logOut = () => {
+        this.setState({
+            menuVisible: !this.state.menuVisible
+        })
+        BackHandler.removeEventListener('hardwareBackPress', this.backhandlerclick);
+        this.props.navigation.replace('Login');
         firebase.auth().signOut();
-        this.props.navigation.navigate('Login');
     }
 
     sort = (type,color) => {
@@ -75,7 +85,9 @@ class HomeScreen extends React.Component {
                                     visible={this.state.menuVisible}
                                     onBackdropPress={() => { this.setState({ menuVisible: !this.state.menuVisible }) }}>
                                     <MenuItem title='Sort By' onPress={() => this.setState({ sortVisible: !this.state.sortVisible, menuVisible: !this.state.menuVisible })} />
+                                    <MenuItem title='Log Out' onPress={this.logOut} />
                                 </OverflowMenu>
+                                <TopNavigationAction icon={AddIcon} onPress={() => navigation.navigate('Notes')}/>
                             </React.Fragment>
                         )
                     }}
@@ -112,12 +124,6 @@ class HomeScreen extends React.Component {
                 <ScrollView style={styles.scrollContainer}>
                     {front}
                 </ScrollView>
-                <TouchableOpacity onPress={() => navigation.navigate('Notes')} style={styles.addButton}>
-                    <Text style={styles.addButtonText}>+</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.logOut} style={styles.signOut}>
-                    <Text style={styles.signOutText}>sign out</Text>
-                </TouchableOpacity>
             </View>
         );
     }
