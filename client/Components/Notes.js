@@ -9,7 +9,7 @@ class Notes extends Component {
 
     render() {
         const { val } = this.props;
-        var d = new Date(val.time)
+        var d = new Date(-val.time)
         return (
             <View key={this.props.keyval} style={{
                 position: 'relative',

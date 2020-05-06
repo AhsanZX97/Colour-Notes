@@ -21,7 +21,7 @@ class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getNotes();
+        this.props.getNotes('time');
         BackHandler.addEventListener('hardwareBackPress', () => {
             return true
         });
@@ -33,15 +33,10 @@ class HomeScreen extends React.Component {
     }
 
     sort = (type) => {
-        console.log(this.props.listOfNotes)
-        switch(type) {
-            case 'Date':
-                return
-            case 'Name':
-                return
-            default:
-                return 
-        }
+        this.props.getNotes(type);
+        this.setState({
+            sortVisible: !this.state.sortVisible
+        })
     }
 
     renderItem = ({ item }) => (
@@ -98,7 +93,7 @@ class HomeScreen extends React.Component {
                     <Card disabled={true}>
                         <List
                             style={styles.modal}
-                            data={[{ title: 'Sort By Date', value: "Date" }, { title: 'Sort By Name', value: "Name" }]}
+                            data={[{ title: 'Sort By Date', value: "time" }, { title: 'Sort By Name', value: "title" }]}
                             renderItem={this.renderItem}
                         />
                         <Button onPress={() => this.setState({ sortVisible: !this.state.sortVisible })}>
