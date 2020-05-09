@@ -22,7 +22,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "Yes"
+    },
+    "android": {
+      "package": "StickyBlickyNotes"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
