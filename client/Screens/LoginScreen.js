@@ -1,7 +1,9 @@
 import React from 'react';
-import { Dimensions } from 'react-native'
+import { Dimensions, NativeModules } from 'react-native'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator, BackHandler } from 'react-native';
 import firebase from '../db'
+
+const SharedStorage = NativeModules.SharedStorage;
 
 class LoginScreen extends React.Component {
 
@@ -21,6 +23,11 @@ class LoginScreen extends React.Component {
                 this.setState({
                     loading: false
                 })
+
+                SharedStorage.set(
+                    JSON.stringify({ user: firebase.auth().currentUser.email })
+                );
+
                 this.props.navigation.replace('StickyBlicky Notes');
             } else {
                 this.setState({
