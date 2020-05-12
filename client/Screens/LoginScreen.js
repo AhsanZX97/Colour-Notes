@@ -67,23 +67,6 @@ class LoginScreen extends React.Component {
             })
     }
 
-    renderButton = () => {
-        switch (this.state.loading) {
-            case true:
-                return (
-                    <Button style={styles.buttonContainer} appearance='outline' accessoryLeft={LoadingIndicator}>
-                        LOADING
-                    </Button>
-                )
-            default:
-                return (
-                    <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
-                        Login
-                    </Button>
-                )
-        }
-    }
-
     changeHandle = (name, value) => {
         this.setState({
             [name]: value.replace(/\s/g, '')
@@ -91,6 +74,8 @@ class LoginScreen extends React.Component {
     }
 
     render() {
+
+        var load = this.state.loading ? LoadingIndicator : null;
 
         return (
             <View style={styles.container}>
@@ -105,7 +90,9 @@ class LoginScreen extends React.Component {
                     onChangeText={password => this.changeHandle("password", password)}
                     size='large' />
 
-                {this.renderButton()}
+                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
+                    Login
+                </Button>
 
                 <Text style={styles.errorText}>
                     {this.state.error}
@@ -149,7 +136,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         marginTop: 10,
     },
-    
+
     text: {
         color: 'black',
         backgroundColor: 'transparent',

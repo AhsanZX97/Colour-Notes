@@ -1,21 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, TextInput, Platform, StatusBar, Alert, BackHandler } from 'react-native';
+import { StyleSheet, View, TextInput, Platform, StatusBar, Alert, BackHandler } from 'react-native';
 import { postNote, editNote } from '../Actions';
 import { connect } from 'react-redux';
-import ActionButton from 'react-native-action-button';
-import Loader from 'react-native-modal-loader';
-import {
-    MenuProvider,
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-    renderers
-} from 'react-native-popup-menu';
+
 import { Icon, Spinner, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction, Button } from '@ui-kitten/components';
-
-
-const { SlideInMenu } = renderers;
 
 const colourScheme = [
     Purple = {
@@ -106,6 +94,9 @@ class NotesScreen extends React.Component {
         setTimeout(() => {
             if (this.state.titleVal.trim() === "") {
                 alert("Title cannot be empty")
+                this.setState({
+                    submit: false,
+                })
             }
             else {
                 var colourScheme = {
@@ -252,14 +243,14 @@ class NotesScreen extends React.Component {
         var load = this.state.submit ? LoadingIndicator : null;
         if (this.state.key != undefined) {
             button = (
-                <Button style={styles.button} appearance='outline' status='primary' onPress={this.editNote} style={styles.createButton} accessoryLeft={load}>
+                <Button style={styles.button} appearance='outline' status={this.state.Color == "Black" ? 'success' : 'primary'} onPress={this.editNote} style={styles.createButton} accessoryLeft={load}>
                     SAVE
                 </Button>
             )
         }
         else {
             button = (
-                <Button style={styles.button} appearance='outline' status='primary' onPress={this.createNote} style={styles.createButton} accessoryLeft={load}>
+                <Button style={styles.button} appearance='outline' status={this.state.Color == "Black" ? 'success' : 'primary'} onPress={this.createNote} style={styles.createButton} accessoryLeft={load}>
                     CREATE
                 </Button>
             )
@@ -267,70 +258,69 @@ class NotesScreen extends React.Component {
 
         return (
 
-            <MenuProvider >
-                <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
-                    <TopNavigation
-                        alignment='center'
-                        title='Notes'
-                        accessoryLeft={() => {
-                            return <TopNavigationAction icon={BackIcon} onPress={this.back} />
-                        }}
-                        accessoryRight={() => {
-                            return (
-                                <React.Fragment>
-                                    <OverflowMenu
-                                        anchor={() => {
-                                            return <TopNavigationAction icon={MenuIcon} onPress={this.toggleMenu} />
-                                        }}
-                                        visible={this.state.menuVisible}
-                                        onBackdropPress={this.toggleMenu}>
-                                        <MenuItem accessoryLeft={BrushIcon} title='Purple' onPress={() => { this.selectColour("Purple") }} />
-                                        <MenuItem accessoryLeft={BrushIcon} title='Red' onPress={() => { this.selectColour("Red") }} />
-                                        <MenuItem accessoryLeft={BrushIcon} title='Blue' onPress={() => { this.selectColour("Blue") }} />
-                                        <MenuItem accessoryLeft={BrushIcon} title='Green' onPress={() => { this.selectColour("Green") }} />
-                                        <MenuItem accessoryLeft={BrushIcon} title='Black' onPress={() => { this.selectColour("Black") }} />
-                                    </OverflowMenu>
-                                </React.Fragment>
-                            )
-                        }}
-                        style={{
-                            backgroundColor: '#FFF2AB',
-                            borderBottomColor: '#EDE6C2',
-                            borderBottomWidth: 1,
-                            color: 'black'
-                        }}
-                    />
-                    <TextInput
-                        style={{
-                            height: 60,
-                            backgroundColor: this.state.titleColor,
-                            borderBottomColor: this.state.borderColor,
-                            borderBottomWidth: 1,
-                            color: this.state.color,
-                            fontSize: 18
-                        }}
-                        placeholder="ADD TITLE..."
-                        placeholderTextColor={this.state.placeholderTextColor}
-                        ref={(el) => { this.titleVal = el; }}
-                        onChangeText={(titleVal) => this.setState({ titleVal, edited: true })}
-                        value={this.state.titleVal}
-                    />
-                    <TextInput underlineColorAndroid="transparent"
-                        style={{
-                            backgroundColor: this.state.noteColor,
-                            color: this.state.color,
-                            textAlignVertical: "top"
-                        }}
-                        placeholder="Add Notes..."
-                        placeholderTextColor={this.state.placeholderTextColor}
-                        ref={(el) => { this.note = el; }}
-                        onChangeText={(note) => this.setState({ note, edited: true })}
-                        value={this.state.note}
-                        multiline={true}
-                        numberOfLines={42} />
-                    {button}
-                </View>
-            </MenuProvider>
+            <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
+                <TopNavigation
+                    alignment='center'
+                    title='Notes'
+                    accessoryLeft={() => {
+                        return <TopNavigationAction icon={BackIcon} onPress={this.back} />
+                    }}
+                    accessoryRight={() => {
+                        return (
+                            <React.Fragment>
+                                <OverflowMenu
+                                    anchor={() => {
+                                        return <TopNavigationAction icon={MenuIcon} onPress={this.toggleMenu} />
+                                    }}
+                                    visible={this.state.menuVisible}
+                                    onBackdropPress={this.toggleMenu}>
+                                    <MenuItem accessoryLeft={BrushIcon} title='Purple' onPress={() => { this.selectColour("Purple") }} />
+                                    <MenuItem accessoryLeft={BrushIcon} title='Red' onPress={() => { this.selectColour("Red") }} />
+                                    <MenuItem accessoryLeft={BrushIcon} title='Blue' onPress={() => { this.selectColour("Blue") }} />
+                                    <MenuItem accessoryLeft={BrushIcon} title='Green' onPress={() => { this.selectColour("Green") }} />
+                                    <MenuItem accessoryLeft={BrushIcon} title='Black' onPress={() => { this.selectColour("Black") }} />
+                                </OverflowMenu>
+                            </React.Fragment>
+                        )
+                    }}
+                    style={{
+                        backgroundColor: '#FFF2AB',
+                        borderBottomColor: '#EDE6C2',
+                        borderBottomWidth: 1,
+                        color: 'black'
+                    }}
+                />
+                <TextInput
+                    style={{
+                        height: 60,
+                        backgroundColor: this.state.titleColor,
+                        borderBottomColor: this.state.borderColor,
+                        borderBottomWidth: 1,
+                        color: this.state.color,
+                        fontSize: 18
+                    }}
+                    placeholder="ADD TITLE..."
+                    placeholderTextColor={this.state.placeholderTextColor}
+                    ref={(el) => { this.titleVal = el; }}
+                    onChangeText={(titleVal) => this.setState({ titleVal, edited: true })}
+                    value={this.state.titleVal}
+                />
+                <TextInput underlineColorAndroid="transparent"
+                    style={{
+                        backgroundColor: this.state.noteColor,
+                        color: this.state.color,
+                        textAlignVertical: "top"
+                    }}
+                    placeholder="Add Notes..."
+                    placeholderTextColor={this.state.placeholderTextColor}
+                    ref={(el) => { this.note = el; }}
+                    onChangeText={(note) => this.setState({ note, edited: true })}
+                    value={this.state.note}
+                    multiline={true}
+                    numberOfLines={42} />
+                {button}
+            </View>
+
         )
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
-import { Input, Button , Spinner } from '@ui-kitten/components';
+import { Input, Button, Spinner } from '@ui-kitten/components';
 
 const LoadingIndicator = (props) => (
     <View style={[props.style, styles.indicator]}>
@@ -68,24 +68,9 @@ class SignUpScreen extends React.Component {
         })
     }
 
-    renderButton = () => {
-        switch (this.state.loading) {
-            case true:
-                return (
-                    <Button style={styles.button} appearance='outline' accessoryLeft={LoadingIndicator}>
-                        LOADING
-                    </Button>)
-            default:
-                return (
-
-                    <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
-                        Sign Up
-                    </Button>
-                )
-        }
-    }
-
     render() {
+
+        var load = this.state.loading ? LoadingIndicator : null;
 
         return (
             <View style={styles.container}>
@@ -103,7 +88,9 @@ class SignUpScreen extends React.Component {
                     secureTextEntry={true}
                     onChangeText={confirmPassword => this.changeHandle("confirmPassword", confirmPassword)} size="large" />
 
-                {this.renderButton()}
+                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
+                    Sign Up
+                </Button>
 
                 <Text style={styles.errorText}>
                     {this.state.error}
