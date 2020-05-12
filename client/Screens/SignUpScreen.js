@@ -1,7 +1,15 @@
 import React from 'react';
 import { Dimensions } from 'react-native'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
+import { Input, Button , Spinner } from '@ui-kitten/components';
+
+const LoadingIndicator = (props) => (
+    <View style={[props.style, styles.indicator]}>
+        <Spinner size='small' />
+    </View>
+);
+
 
 class SignUpScreen extends React.Component {
     state = {
@@ -54,7 +62,7 @@ class SignUpScreen extends React.Component {
 
     }
 
-    changeHandle = (name,value) => {
+    changeHandle = (name, value) => {
         this.setState({
             [name]: value.replace(/\s/g, '')
         })
@@ -63,12 +71,16 @@ class SignUpScreen extends React.Component {
     renderButton = () => {
         switch (this.state.loading) {
             case true:
-                return (<ActivityIndicator size="large" />)
+                return (
+                    <Button style={styles.button} appearance='outline' accessoryLeft={LoadingIndicator}>
+                        LOADING
+                    </Button>)
             default:
                 return (
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                        <Text style={styles.buttonText}>SignUp</Text>
-                    </TouchableOpacity>
+
+                    <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
+                        Sign Up
+                    </Button>
                 )
         }
     }
@@ -77,19 +89,19 @@ class SignUpScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TextInput placeholder="email" style={styles.input}
+                <Input placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.changeHandle("email",email)} />
+                    onChangeText={email => this.changeHandle("email", email)} size="large" />
 
-                <TextInput placeholder="password" style={styles.input}
+                <Input placeholder="password" style={styles.input}
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={password => this.changeHandle("password",password)} />
+                    onChangeText={password => this.changeHandle("password", password)} size="large" />
 
-                <TextInput placeholder="confirm password" style={styles.input}
+                <Input placeholder="confirm password" style={styles.input}
                     value={this.state.confirmPassword}
                     secureTextEntry={true}
-                    onChangeText={confirmPassword => this.changeHandle("confirmPassword",confirmPassword)} />
+                    onChangeText={confirmPassword => this.changeHandle("confirmPassword", confirmPassword)} size="large" />
 
                 {this.renderButton()}
 
@@ -110,34 +122,24 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#F2E6FF',
+        borderColor: '#E1D6ED',
+        borderWidth: 8,
     },
 
     input: {
-        backgroundColor: '#ffe97d',
-        width: screenWidth - 40,
         height: 60,
-        marginHorizontal: 20,
-        paddingLeft: 45,
-        marginTop: 20,
-        borderRadius: 20,
-        color: '#000000',
+        paddingLeft: 5,
+        paddingRight: 5,
+        color: '#000000'
     },
 
     buttonContainer: {
-        backgroundColor: '#3B3B98',
-        padding: 15,
         borderRadius: 20,
-        width: screenWidth - 40,
+        width: screenWidth - 35,
         height: 60,
-        marginTop: 20,
-    },
-
-    buttonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20
+        marginTop: 10,
     },
 
     errorText: {

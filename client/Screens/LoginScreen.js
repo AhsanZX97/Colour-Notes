@@ -1,7 +1,14 @@
 import React from 'react';
 import { Dimensions, NativeModules } from 'react-native'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
+import { Input, Button, Spinner } from '@ui-kitten/components';
+
+const LoadingIndicator = (props) => (
+    <View style={[props.style, styles.indicator]}>
+        <Spinner size='small' />
+    </View>
+);
 
 const SharedStorage = NativeModules.SharedStorage;
 
@@ -63,12 +70,16 @@ class LoginScreen extends React.Component {
     renderButton = () => {
         switch (this.state.loading) {
             case true:
-                return (<ActivityIndicator size="large" />)
+                return (
+                    <Button style={styles.buttonContainer} appearance='outline' accessoryLeft={LoadingIndicator}>
+                        LOADING
+                    </Button>
+                )
             default:
                 return (
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                        <Text style={styles.buttonText}>Login</Text>
-                    </TouchableOpacity>
+                    <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
+                        Login
+                    </Button>
                 )
         }
     }
@@ -83,14 +94,16 @@ class LoginScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TextInput placeholder="email" style={styles.input}
+                <Input placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.changeHandle("email", email)} />
+                    onChangeText={email => this.changeHandle("email", email)}
+                    size='large' />
 
-                <TextInput placeholder="password" style={styles.input}
+                <Input placeholder="password" style={styles.input}
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={password => this.changeHandle("password", password)} />
+                    onChangeText={password => this.changeHandle("password", password)}
+                    size='large' />
 
                 {this.renderButton()}
 
@@ -99,12 +112,15 @@ class LoginScreen extends React.Component {
                 </Text>
 
                 <View style={styles.signUpSection}>
-                    <TouchableOpacity style={styles.signUpSection} onPress={() => this.props.navigation.navigate('Sign Up')}>
-                        <Text style={styles.signUpText}>Create Account</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.signUpSection} onPress={() => this.props.navigation.navigate('Forgot')}>
-                        <Text style={styles.text}>Forget Password</Text>
-                    </TouchableOpacity>
+
+                    <Button appearance='outline' status='info' onPress={() => this.props.navigation.navigate('Sign Up')}>
+                        Create Account
+                    </Button>
+
+                    <Button appearance='outline' status='info' onPress={() => this.props.navigation.navigate('Forgot')}>
+                        Forgot Password
+                    </Button>
+
                 </View>
 
             </View>
@@ -121,44 +137,36 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#F2E6FF',
+        borderColor: '#E1D6ED',
+        borderWidth: 8,
     },
 
     signUpSection: {
         width: screenWidth - 80,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        marginTop: 10,
     },
+    
     text: {
         color: 'black',
         backgroundColor: 'transparent',
     },
 
     input: {
-        backgroundColor: '#ffe97d',
-        width: screenWidth - 40,
         height: 60,
-        marginHorizontal: 20,
-        paddingLeft: 45,
-        marginTop: 20,
-        borderRadius: 20,
-        color: '#000000',
+        paddingLeft: 5,
+        paddingRight: 5,
+        color: '#000000'
     },
 
     buttonContainer: {
-        backgroundColor: '#3B3B98',
-        padding: 15,
         borderRadius: 20,
-        width: screenWidth - 40,
+        width: screenWidth - 35,
         height: 60,
-        marginTop: 20,
-    },
-
-    buttonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20
+        marginTop: 10,
     },
 
     errorText: {

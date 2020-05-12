@@ -2,6 +2,8 @@ import React from 'react';
 import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import firebase from '../db'
+import { Input, Button, Spinner } from '@ui-kitten/components';
+
 
 class ForgotScreen extends React.Component {
     state = {
@@ -26,17 +28,17 @@ class ForgotScreen extends React.Component {
         })
 
         firebase.auth().sendPasswordResetEmail(this.state.email)
-        .then(success => {
-            this.setState({
-                email: '',
-                error: 'Email send to reset password'
+            .then(success => {
+                this.setState({
+                    email: '',
+                    error: 'Email send to reset password'
+                })
             })
-        })
-        .catch(err => {
-            this.setState({
-                error: err.message,
+            .catch(err => {
+                this.setState({
+                    error: err.message,
+                })
             })
-        })
 
     }
 
@@ -50,13 +52,13 @@ class ForgotScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TextInput placeholder="email" style={styles.input}
+                <Input placeholder="email" style={styles.input}
                     value={this.state.email}
-                    onChangeText={email => this.changeHandle("email", email)} />
+                    onChangeText={email => this.changeHandle("email", email)} size="large" />
 
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                    <Text style={styles.buttonText}>Send</Text>
-                </TouchableOpacity>
+                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
+                    Send
+                </Button>
 
                 <Text style={styles.errorText}>
                     {this.state.error}
@@ -79,30 +81,17 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        backgroundColor: '#ffe97d',
-        width: screenWidth - 40,
         height: 60,
-        marginHorizontal: 20,
-        paddingLeft: 45,
-        marginTop: 20,
-        borderRadius: 20,
-        color: '#000000',
+        paddingLeft: 5,
+        paddingRight: 5,
+        color: '#000000'
     },
 
     buttonContainer: {
-        backgroundColor: '#3B3B98',
-        padding: 15,
         borderRadius: 20,
-        width: screenWidth - 40,
+        width: screenWidth - 35,
         height: 60,
-        marginTop: 20,
-    },
-
-    buttonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20
+        marginTop: 10,
     },
 
     errorText: {
