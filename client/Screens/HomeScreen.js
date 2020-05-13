@@ -71,10 +71,10 @@ class HomeScreen extends React.Component {
 
         return (
             <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
-                <StatusBar translucent backgroundColor="#EEE2A0" />
+                <StatusBar translucent backgroundColor="#FFDCA4" />
                 <TopNavigation
                     alignment='center'
-                    title='Sticky Blicky Notes'
+                    title='Colour Notes'
                     accessoryRight={() => {
                         return (
                             <React.Fragment>
@@ -92,9 +92,9 @@ class HomeScreen extends React.Component {
                         )
                     }}
                     style={{
-                        backgroundColor: '#FFF2AB',
-                        borderBottomColor: '#EDE6C2',
-                        borderBottomWidth: 1,
+                        backgroundColor: '#FFF7EB',
+                        borderBottomColor: '#FFDCA4',
+                        borderBottomWidth: 3,
                         color: 'black'
                     }}
                 />

@@ -284,9 +284,9 @@ class NotesScreen extends React.Component {
                         )
                     }}
                     style={{
-                        backgroundColor: '#FFF2AB',
-                        borderBottomColor: '#EDE6C2',
-                        borderBottomWidth: 1,
+                        backgroundColor: '#FFF7EB',
+                        borderBottomColor: '#FFDCA4',
+                        borderBottomWidth: 3,
                         color: 'black'
                     }}
                 />
