@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
+import Logo from '../Components/Logo'
 
 
 class ForgotScreen extends React.Component {
@@ -52,12 +53,15 @@ class ForgotScreen extends React.Component {
 
         return (
             <View style={styles.container}>
+
+                <Logo />
+
                 <Input placeholder="email" style={styles.input}
                     value={this.state.email}
                     onChangeText={email => this.changeHandle("email", email)} size="large" />
 
-                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress}>
-                    Send
+                <Button appearance='outline' status='warning' style={styles.buttonContainer} onPress={this.onButtonPress}>
+                    <Text style={{color:'#FF8000'}}>Send</Text>
                 </Button>
 
                 <Text style={styles.errorText}>
@@ -77,14 +81,19 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#F2E6FF',
+        borderColor: '#E1D6ED',
+        borderWidth: 8,
     },
 
     input: {
         height: 60,
         paddingLeft: 5,
         paddingRight: 5,
-        color: '#000000'
+        color: '#000000',
+        backgroundColor:'#fcebf5',
+        borderColor:'#FCB730',
     },
 
     buttonContainer: {

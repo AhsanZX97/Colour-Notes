@@ -3,6 +3,7 @@ import { Dimensions, NativeModules } from 'react-native'
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
+import Logo from '../Components/Logo'
 
 const LoadingIndicator = (props) => (
     <View style={[props.style, styles.indicator]}>
@@ -31,9 +32,9 @@ class LoginScreen extends React.Component {
                     loading: false
                 })
 
-                SharedStorage.set(
+                /*SharedStorage.set(
                     JSON.stringify({ user: firebase.auth().currentUser.email })
-                );
+                );*/
 
                 this.props.navigation.replace('StickyBlicky Notes');
             } else {
@@ -79,6 +80,9 @@ class LoginScreen extends React.Component {
 
         return (
             <View style={styles.container}>
+
+                <Logo />
+
                 <Input placeholder="email" style={styles.input}
                     value={this.state.email}
                     onChangeText={email => this.changeHandle("email", email)}
@@ -90,8 +94,8 @@ class LoginScreen extends React.Component {
                     onChangeText={password => this.changeHandle("password", password)}
                     size='large' />
 
-                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
-                    Login
+                <Button appearance='outline' status='warning' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
+                    <Text style={{color:'#FF8000'}}>Login</Text>
                 </Button>
 
                 <Text style={styles.errorText}>
@@ -100,12 +104,12 @@ class LoginScreen extends React.Component {
 
                 <View style={styles.signUpSection}>
 
-                    <Button appearance='outline' status='info' onPress={() => this.props.navigation.navigate('Sign Up')}>
-                        Create Account
+                    <Button appearance='outline' status='warning' onPress={() => this.props.navigation.navigate('Sign Up')} style = {styles.signUpButton}>
+                        <Text style={{color:'#FF8000'}}>Create Account</Text>
                     </Button>
 
-                    <Button appearance='outline' status='info' onPress={() => this.props.navigation.navigate('Forgot')}>
-                        Forgot Password
+                    <Button appearance='outline' status='warning' onPress={() => this.props.navigation.navigate('Forgot')} style = {styles.signUpButton}>
+                        <Text style={{color:'#FF8000'}}>Forgot Password</Text>
                     </Button>
 
                 </View>
@@ -135,6 +139,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: 10,
+
+    },
+
+    signUpButton: {
+        borderRadius: 10,
+        backgroundColor:'#fcebf5'
     },
 
     text: {
@@ -146,11 +156,13 @@ const styles = StyleSheet.create({
         height: 60,
         paddingLeft: 5,
         paddingRight: 5,
-        color: '#000000'
+        color: '#000000',
+        backgroundColor:'#fcebf5',
+        borderColor:'#FCB730',
     },
 
     buttonContainer: {
-        borderRadius: 20,
+        borderRadius: 10,
         width: screenWidth - 35,
         height: 60,
         marginTop: 10,

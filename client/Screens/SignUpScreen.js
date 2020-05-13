@@ -3,6 +3,8 @@ import { Dimensions } from 'react-native'
 import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
+import Logo from '../Components/Logo'
+
 
 const LoadingIndicator = (props) => (
     <View style={[props.style, styles.indicator]}>
@@ -74,6 +76,9 @@ class SignUpScreen extends React.Component {
 
         return (
             <View style={styles.container}>
+
+                <Logo />
+
                 <Input placeholder="email" style={styles.input}
                     value={this.state.email}
                     onChangeText={email => this.changeHandle("email", email)} size="large" />
@@ -88,8 +93,8 @@ class SignUpScreen extends React.Component {
                     secureTextEntry={true}
                     onChangeText={confirmPassword => this.changeHandle("confirmPassword", confirmPassword)} size="large" />
 
-                <Button appearance='outline' status='primary' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
-                    Sign Up
+                <Button appearance='outline' status='warning' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
+                    <Text style={{color:'#FF8000'}}>Sign Up</Text>
                 </Button>
 
                 <Text style={styles.errorText}>
@@ -119,7 +124,9 @@ const styles = StyleSheet.create({
         height: 60,
         paddingLeft: 5,
         paddingRight: 5,
-        color: '#000000'
+        color: '#000000',
+        backgroundColor:'#fcebf5',
+        borderColor:'#FCB730',
     },
 
     buttonContainer: {
