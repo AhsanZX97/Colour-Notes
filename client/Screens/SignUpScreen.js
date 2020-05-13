@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
 import Logo from '../Components/Logo'
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 
 const LoadingIndicator = (props) => (
@@ -100,6 +101,8 @@ class SignUpScreen extends React.Component {
                 <Text style={styles.errorText}>
                     {this.state.error}
                 </Text>
+
+                <KeyboardSpacer/>
 
             </View>
         )

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Dimensions, NativeModules } from 'react-native'
-import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar, ScrollView} from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
 import Logo from '../Components/Logo'
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 
 const LoadingIndicator = (props) => (
     <View style={[props.style, styles.indicator]}>
@@ -113,6 +115,8 @@ class LoginScreen extends React.Component {
                     </Button>
 
                 </View>
+
+                <KeyboardSpacer/>
 
             </View>
         )

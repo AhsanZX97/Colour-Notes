@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBa
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
 import Logo from '../Components/Logo'
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 
 
 class ForgotScreen extends React.Component {
@@ -67,6 +69,8 @@ class ForgotScreen extends React.Component {
                 <Text style={styles.errorText}>
                     {this.state.error}
                 </Text>
+
+                <KeyboardSpacer/>
 
             </View>
         )

@@ -121,7 +121,7 @@ class HomeScreen extends React.Component {
                         </Button>
                     </Card>
                 </Modal>
-                <ScrollView style={styles.scrollContainer}>
+                <ScrollView>
                     {front}
                 </ScrollView>
             </View>
