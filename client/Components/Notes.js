@@ -24,7 +24,7 @@ class Notes extends Component {
                 }}>{val.title}
                     <Text style={{
                         fontSize: 9,
-                        color: 'grey'
+                        color: val.colorScheme.Color == "Black" ? 'white':'grey'
                     }}>
                         {d.toUTCString().substring(0, d.toUTCString().length - 7)}
                     </Text>
