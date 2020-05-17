@@ -1,10 +1,9 @@
 import React from 'react';
 import { Dimensions } from 'react-native'
-import { StyleSheet, Text, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar, Animated, Keyboard } from 'react-native';
 import firebase from '../db'
 import { Input, Button, Spinner } from '@ui-kitten/components';
-import Logo from '../Components/Logo'
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+import Logo from '../assets/Logo.png'
 
 
 const LoadingIndicator = (props) => (
@@ -22,6 +21,43 @@ class SignUpScreen extends React.Component {
         error: '',
         loading: false
     }
+
+    imageHeight = new Animated.Value(256);
+    imageWidth = new Animated.Value(256);
+
+    componentWillMount() {
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    }
+
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove();
+        this.keyboardWillHideSub.remove();
+    }
+
+    keyboardDidShow = (event) => {
+        Animated.timing(this.imageHeight, {
+            duration: event.duration,
+            toValue: 128,
+        }).start()
+
+        Animated.timing(this.imageWidth, {
+            duration: event.duration,
+            toValue: 128,
+        }).start()
+    };
+
+    keyboardDidHide = (event) => {
+        Animated.timing(this.imageHeight, {
+            duration: event.duration,
+            toValue: 256,
+        }).start()
+
+        Animated.timing(this.imageWidth, {
+            duration: event.duration,
+            toValue: 256,
+        }).start()
+    };
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -78,7 +114,7 @@ class SignUpScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Logo />
+                <Animated.Image source={Logo} style={[styles.logo, { height: this.imageHeight, width: this.imageWidth }]} />
 
                 <Input placeholder="email" style={styles.input}
                     value={this.state.email}
@@ -95,14 +131,12 @@ class SignUpScreen extends React.Component {
                     onChangeText={confirmPassword => this.changeHandle("confirmPassword", confirmPassword)} size="large" />
 
                 <Button appearance='outline' status='warning' style={styles.buttonContainer} onPress={this.onButtonPress} accessoryLeft={load}>
-                    <Text style={{color:'#FF8000'}}>Sign Up</Text>
+                    <Text style={{ color: '#FF8000' }}>Sign Up</Text>
                 </Button>
 
                 <Text style={styles.errorText}>
                     {this.state.error}
                 </Text>
-
-                <KeyboardSpacer/>
 
             </View>
         )
@@ -128,8 +162,8 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
         color: '#000000',
-        backgroundColor:'#fcebf5',
-        borderColor:'#FCB730',
+        backgroundColor: '#fcebf5',
+        borderColor: '#FCB730',
     },
 
     buttonContainer: {
@@ -145,6 +179,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 15
     },
+
+    logo: {
+        marginBottom: 48
+    }
 })
 
 
