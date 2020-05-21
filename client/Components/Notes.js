@@ -24,7 +24,7 @@ class Notes extends Component {
                 }}>{val.title}
                     <Text style={{
                         fontSize: 9,
-                        color: 'grey'
+                        color: val.colorScheme.Color == "Black" ? 'white':'grey'
                     }}>
                         {d.toUTCString().substring(0, d.toUTCString().length - 7)}
                     </Text>
@@ -32,7 +32,7 @@ class Notes extends Component {
 
                 <Text style={{
                     color: val.colorScheme.color,
-                }}>{val.noteText.length > 40 ? val.noteText.substring(0, 40) + '...' : val.noteText}</Text>
+                }}>{val.noteText.length > 40 ? val.noteText.replace(/\n/g, '').substring(0, 40) + '...' : val.noteText.replace(/\n/g, '')}</Text>
                 <TouchableOpacity onPress={deleteNote(this.props.keyval)} style={styles.noteDelete}>
                     <Icon name="md-trash" style={styles.actionButtonIcon} />
                 </TouchableOpacity>

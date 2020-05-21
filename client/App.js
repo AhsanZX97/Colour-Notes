@@ -10,9 +10,8 @@ import Reducers from './Reducers'
 import LoginScreen from './Screens/LoginScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 import ForgotScreen from './Screens/ForgotScreen'
-import { Alert } from "react-native";
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 

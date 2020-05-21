@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
         firebase.auth().signOut();
     }
 
-    sort = (type,color) => {
+    sort = (type, color) => {
         this.props.getNotes(type, color);
         this.setState({
             sortVisible: !this.state.sortVisible
@@ -50,7 +50,7 @@ class HomeScreen extends React.Component {
     }
 
     renderItem = ({ item }) => (
-        <ListItem title={`${item.title}`} onPress={() => { this.sort(item.value, item.color) }}/>
+        <ListItem title={`${item.title}`} onPress={() => { this.sort(item.value, item.color) }} />
     );
 
 
@@ -71,10 +71,10 @@ class HomeScreen extends React.Component {
 
         return (
             <View style={{ flex: 1, paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0 }}>
-                <StatusBar translucent backgroundColor="#EEE2A0" />
+                <StatusBar translucent backgroundColor="#FFDCA4" />
                 <TopNavigation
                     alignment='center'
-                    title='Sticky Blicky Notes'
+                    title='Colour Notes'
                     accessoryRight={() => {
                         return (
                             <React.Fragment>
@@ -87,14 +87,14 @@ class HomeScreen extends React.Component {
                                     <MenuItem title='Sort By' onPress={() => this.setState({ sortVisible: !this.state.sortVisible, menuVisible: !this.state.menuVisible })} />
                                     <MenuItem title='Log Out' onPress={this.logOut} />
                                 </OverflowMenu>
-                                <TopNavigationAction icon={AddIcon} onPress={() => navigation.navigate('Notes')}/>
+                                <TopNavigationAction icon={AddIcon} onPress={() => navigation.navigate('Notes')} />
                             </React.Fragment>
                         )
                     }}
                     style={{
-                        backgroundColor: '#FFF2AB',
-                        borderBottomColor: '#EDE6C2',
-                        borderBottomWidth: 1,
+                        backgroundColor: '#FFF7EB',
+                        borderBottomColor: '#FFDCA4',
+                        borderBottomWidth: 3,
                         color: 'black'
                     }}
                 />
@@ -106,13 +106,13 @@ class HomeScreen extends React.Component {
                         <List
                             style={styles.modal}
                             data={[
-                                { title: 'Sort By Date', value: "time" }, 
+                                { title: 'Sort By Date', value: "time" },
                                 { title: 'Sort By Name', value: "title" },
-                                { title: 'Sort By Purple Notes', value: "time", color: 'Purple'},
-                                { title: 'Sort By Red Notes', value: "time", color: 'Red'},
-                                { title: 'Sort By Blue Notes', value: "time", color: 'Blue'},
-                                { title: 'Sort By Green Notes', value: "time", color: 'Green'},
-                                { title: 'Sort By Black Notes', value: "time", color: 'Black'},
+                                { title: 'Sort By Purple Notes', value: "time", color: 'Purple' },
+                                { title: 'Sort By Red Notes', value: "time", color: 'Red' },
+                                { title: 'Sort By Blue Notes', value: "time", color: 'Blue' },
+                                { title: 'Sort By Green Notes', value: "time", color: 'Green' },
+                                { title: 'Sort By Black Notes', value: "time", color: 'Black' },
                             ]}
                             renderItem={this.renderItem}
                         />
@@ -121,7 +121,7 @@ class HomeScreen extends React.Component {
                         </Button>
                     </Card>
                 </Modal>
-                <ScrollView style={styles.scrollContainer}>
+                <ScrollView>
                     {front}
                 </ScrollView>
             </View>

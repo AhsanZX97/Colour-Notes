@@ -1,13 +1,54 @@
 import React from 'react';
 import { Dimensions } from 'react-native'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Platform, StatusBar, Animated, Keyboard } from 'react-native';
 import firebase from '../db'
+import { Input, Button } from '@ui-kitten/components';
+import Logo from '../assets/Logo.png';
+
+
 
 class ForgotScreen extends React.Component {
     state = {
         email: '',
         error: '',
     }
+
+    imageHeight = new Animated.Value(256);
+    imageWidth = new Animated.Value(256);
+
+    componentWillMount() {
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    }
+
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove();
+        this.keyboardWillHideSub.remove();
+    }
+
+    keyboardDidShow = (event) => {
+        Animated.timing(this.imageHeight, {
+            duration: event.duration,
+            toValue: 128,
+        }).start()
+
+        Animated.timing(this.imageWidth, {
+            duration: event.duration,
+            toValue: 128,
+        }).start()
+    };
+
+    keyboardDidHide = (event) => {
+        Animated.timing(this.imageHeight, {
+            duration: event.duration,
+            toValue: 256,
+        }).start()
+
+        Animated.timing(this.imageWidth, {
+            duration: event.duration,
+            toValue: 256,
+        }).start()
+    };
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -26,17 +67,17 @@ class ForgotScreen extends React.Component {
         })
 
         firebase.auth().sendPasswordResetEmail(this.state.email)
-        .then(success => {
-            this.setState({
-                email: '',
-                error: 'Email send to reset password'
+            .then(success => {
+                this.setState({
+                    email: '',
+                    error: 'Email send to reset password'
+                })
             })
-        })
-        .catch(err => {
-            this.setState({
-                error: err.message,
+            .catch(err => {
+                this.setState({
+                    error: err.message,
+                })
             })
-        })
 
     }
 
@@ -50,13 +91,16 @@ class ForgotScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TextInput placeholder="email" style={styles.input}
-                    value={this.state.email}
-                    onChangeText={email => this.changeHandle("email", email)} />
 
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
-                    <Text style={styles.buttonText}>Send</Text>
-                </TouchableOpacity>
+                <Animated.Image source={Logo} style={[styles.logo, { height: this.imageHeight, width: this.imageWidth }]} />
+
+                <Input placeholder="email" style={styles.input}
+                    value={this.state.email}
+                    onChangeText={email => this.changeHandle("email", email)} size="large" />
+
+                <Button appearance='outline' status='warning' style={styles.buttonContainer} onPress={this.onButtonPress}>
+                    <Text style={{ color: '#FF8000' }}>Send</Text>
+                </Button>
 
                 <Text style={styles.errorText}>
                     {this.state.error}
@@ -75,34 +119,26 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#F2E6FF',
+        borderColor: '#E1D6ED',
+        borderWidth: 8,
     },
 
     input: {
-        backgroundColor: '#ffe97d',
-        width: screenWidth - 40,
         height: 60,
-        marginHorizontal: 20,
-        paddingLeft: 45,
-        marginTop: 20,
-        borderRadius: 20,
+        paddingLeft: 5,
+        paddingRight: 5,
         color: '#000000',
+        backgroundColor: '#fcebf5',
+        borderColor: '#FCB730',
     },
 
     buttonContainer: {
-        backgroundColor: '#3B3B98',
-        padding: 15,
-        borderRadius: 20,
-        width: screenWidth - 40,
+        borderRadius: 10,
+        width: screenWidth - 35,
         height: 60,
-        marginTop: 20,
-    },
-
-    buttonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20
+        marginTop: 10,
     },
 
     errorText: {
@@ -111,6 +147,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 15
     },
+
+    logo: {
+        marginBottom: 48
+    }
 })
 
 
