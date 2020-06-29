@@ -7,3 +7,11 @@ This is a simple note taking app built on top of React Native, expo and google f
 In the root directory, open command prompt and do:
 1. ```cd ./client```
 2. ``` react-native run-android```
+
+## Technologies Used
+---
+- JavaScript
+- Java
+- Firebase
+- React-Native
+- Expo
